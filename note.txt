@@ -1,0 +1,6 @@
+model based: extended isolation forest
+density based: lof
+ensemble based: loda
+
+tomek/edited nearest neighbor
+adasyn
