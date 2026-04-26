@@ -8,6 +8,7 @@ dependencies = [
     "claude>=0.4.11",
     "imblearn>=0.0",
     "ipykernel>=7.2.0",
+    "isotree>=0.6.1.post8",
     "matplotlib>=3.10.8",
     "miceforest>=6.0.5",
     "nbconvert>=7.17.0",
