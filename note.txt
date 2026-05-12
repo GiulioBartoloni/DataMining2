@@ -4,3 +4,5 @@ ensemble based: loda
 
 tomek/edited nearest neighbor
 adasyn
+
+discordanze -> da concatenare al clustering
