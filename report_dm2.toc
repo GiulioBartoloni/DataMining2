@@ -1,0 +1,118 @@
+\contentsline {title}{Data Mining 2 \\ Child Mind Institute --- Predicting Problematic Internet Use in Children and Adolescents: Advanced Preprocessing, Machine Learning, and Explainability}{1}{section*.1}%
+\tocdepth@munge 
+\contentsline {section}{\numberline {}Contents}{1}{section*.2}%
+\tocdepth@restore 
+\contentsline {section}{\numberline {I}Introduction}{2}{section*.3}%
+\contentsline {paragraph}{\numberline {a}Project scope.}{2}{section*.4}%
+\contentsline {paragraph}{\numberline {b}Context.}{2}{section*.5}%
+\contentsline {paragraph}{\numberline {c}Project Objectives.}{2}{section*.6}%
+\contentsline {paragraph}{\numberline {d}Analytical philosophy.}{2}{section*.7}%
+\contentsline {section}{\numberline {II}Data Description}{3}{section*.8}%
+\contentsline {paragraph}{\numberline {a}Data Source \& Size.}{3}{section*.9}%
+\contentsline {paragraph}{\numberline {b}Feature Groups \& Semantics.}{3}{section*.10}%
+\contentsline {paragraph}{\numberline {c}Target variable.}{3}{section*.11}%
+\contentsline {paragraph}{\numberline {d}Why physical proxies?}{3}{section*.12}%
+\contentsline {section}{\numberline {III}Data Understanding \& Preparation}{3}{section*.13}%
+\contentsline {paragraph}{\numberline {a}Participant profile.}{3}{section*.14}%
+\contentsline {subsection}{\numberline {A}Data Quality Assessment}{4}{section*.15}%
+\contentsline {paragraph}{\numberline {a}Invalid and extreme values.}{4}{section*.16}%
+\contentsline {paragraph}{\numberline {b}Missing values.}{4}{section*.20}%
+\contentsline {paragraph}{\numberline {c}Categorical semantics.}{5}{section*.22}%
+\contentsline {subsection}{\numberline {B}Missing-Value Imputation}{5}{section*.23}%
+\contentsline {paragraph}{\numberline {a}Leakage-aware imputation.}{5}{section*.24}%
+\contentsline {paragraph}{\numberline {b}Why MICE rather than simpler imputation.}{5}{section*.25}%
+\contentsline {subsection}{\numberline {C}Correlation \& Redundancy Analysis}{5}{section*.27}%
+\contentsline {paragraph}{\numberline {a}Redundancy-driven removal.}{5}{section*.28}%
+\contentsline {paragraph}{\numberline {b}Association with the target.}{5}{section*.30}%
+\contentsline {subsection}{\numberline {D}Feature Engineering \& Transformation}{6}{section*.33}%
+\contentsline {paragraph}{\numberline {a}Rationale for the composites.}{6}{section*.34}%
+\contentsline {subsection}{\numberline {E}Class Distribution}{7}{section*.35}%
+\contentsline {section}{\numberline {IV}Advanced Data Preprocessing}{7}{section*.37}%
+\contentsline {paragraph}{\numberline {a}Tooling and reproducibility.}{7}{section*.38}%
+\contentsline {subsection}{\numberline {A}Anomaly Detection}{7}{section*.39}%
+\contentsline {paragraph}{\numberline {a}Setup.}{7}{section*.40}%
+\contentsline {subsubsection}{\numberline {1}Methods}{7}{section*.41}%
+\contentsline {paragraph}{\numberline {a}Extended Isolation Forest (model-based).}{7}{section*.42}%
+\contentsline {paragraph}{\numberline {b}Local Outlier Factor (density-based).}{8}{section*.44}%
+\contentsline {paragraph}{\numberline {c}LODA (ensemble-based).}{8}{section*.45}%
+\contentsline {paragraph}{\numberline {d}ABOD (angle-based).}{8}{section*.46}%
+\contentsline {paragraph}{\numberline {e}Threshold selection.}{8}{section*.48}%
+\contentsline {paragraph}{\numberline {f}Score behavior.}{8}{section*.49}%
+\contentsline {subsubsection}{\numberline {2}Low-dimensional visualization}{8}{section*.51}%
+\contentsline {subsubsection}{\numberline {3}Consensus and treatment}{8}{section*.53}%
+\contentsline {paragraph}{\numberline {a}Why remove rather than repair.}{9}{section*.55}%
+\contentsline {subsection}{\numberline {B}Imbalanced Learning}{9}{section*.58}%
+\contentsline {paragraph}{\numberline {a}Setup.}{10}{section*.59}%
+\contentsline {paragraph}{\numberline {b}Resampling techniques.}{10}{section*.60}%
+\contentsline {paragraph}{\numberline {c}Results and discussion.}{10}{section*.62}%
+\contentsline {paragraph}{\numberline {d}Mechanism behind each result.}{10}{section*.63}%
+\contentsline {section}{\numberline {V}Advanced Classification, Regression, and Explainability}{11}{section*.68}%
+\contentsline {subsection}{\numberline {A}Classification}{11}{section*.69}%
+\contentsline {paragraph}{\numberline {a}Common protocol.}{11}{section*.70}%
+\contentsline {subsubsection}{\numberline {1}Logistic Regression}{11}{section*.71}%
+\contentsline {paragraph}{\numberline {a}Model and tuning.}{11}{section*.72}%
+\contentsline {paragraph}{\numberline {b}Results.}{11}{section*.73}%
+\contentsline {subsubsection}{\numberline {2}Support Vector Machine}{12}{section*.75}%
+\contentsline {paragraph}{\numberline {a}Model and tuning.}{12}{section*.76}%
+\contentsline {paragraph}{\numberline {b}Results.}{12}{section*.77}%
+\contentsline {subsubsection}{\numberline {3}Neural Network (MLP)}{12}{section*.79}%
+\contentsline {paragraph}{\numberline {a}Model and tuning.}{12}{section*.80}%
+\contentsline {paragraph}{\numberline {b}Convergence and overfitting.}{12}{section*.81}%
+\contentsline {paragraph}{\numberline {c}Results.}{12}{section*.82}%
+\contentsline {subsubsection}{\numberline {4}AdaBoost}{12}{section*.84}%
+\contentsline {paragraph}{\numberline {a}Model and tuning.}{12}{section*.85}%
+\contentsline {paragraph}{\numberline {b}Results.}{12}{section*.86}%
+\contentsline {subsubsection}{\numberline {5}Gradient Boosting (XGBoost)}{13}{section*.88}%
+\contentsline {paragraph}{\numberline {a}Model and tuning.}{13}{section*.89}%
+\contentsline {paragraph}{\numberline {b}Results.}{13}{section*.90}%
+\contentsline {subsubsection}{\numberline {6}Classification comparison and discussion}{13}{section*.92}%
+\contentsline {paragraph}{\numberline {a}Confusion structure.}{14}{section*.96}%
+\contentsline {paragraph}{\numberline {b}Overall behavior.}{14}{section*.97}%
+\contentsline {paragraph}{\numberline {c}Class-wise pattern.}{14}{section*.98}%
+\contentsline {paragraph}{\numberline {d}Effect of tuning.}{14}{section*.99}%
+\contentsline {subsection}{\numberline {B}Regression}{14}{section*.101}%
+\contentsline {paragraph}{\numberline {a}Setup.}{14}{section*.102}%
+\contentsline {paragraph}{\numberline {b}Results.}{15}{section*.104}%
+\contentsline {subsection}{\numberline {C}Explainability (XAI)}{15}{section*.109}%
+\contentsline {paragraph}{\numberline {a}SHAP (XGBoost).}{15}{section*.110}%
+\contentsline {paragraph}{\numberline {b}LIME (MLP).}{16}{section*.111}%
+\contentsline {paragraph}{\numberline {c}Permutation importance.}{16}{section*.112}%
+\contentsline {paragraph}{\numberline {d}Why three explainers.}{16}{section*.115}%
+\contentsline {subsection}{\numberline {D}Combining Techniques: XGBoost with ADASYN}{16}{section*.116}%
+\contentsline {paragraph}{\numberline {a}Protocol.}{16}{section*.117}%
+\contentsline {paragraph}{\numberline {b}Results.}{17}{section*.118}%
+\contentsline {paragraph}{\numberline {c}Takeaway.}{17}{section*.121}%
+\contentsline {section}{\numberline {VI}Time Series Data and Preprocessing}{17}{section*.122}%
+\contentsline {subsection}{\numberline {A}Dataset Description}{17}{section*.123}%
+\contentsline {paragraph}{\numberline {a}One series is one subject-day.}{17}{section*.124}%
+\contentsline {subsection}{\numberline {B}Missing Values and Column Selection}{17}{section*.125}%
+\contentsline {subsection}{\numberline {C}Non-wear Filtering}{18}{section*.126}%
+\contentsline {subsection}{\numberline {D}Physically-Impossible Spike Removal}{18}{section*.127}%
+\contentsline {paragraph}{\numberline {a}Why not a Hampel filter.}{18}{section*.128}%
+\contentsline {paragraph}{\numberline {b}A magnitude-and-isolation rule.}{18}{section*.129}%
+\contentsline {subsection}{\numberline {E}Cleaned Dataset}{18}{section*.131}%
+\contentsline {section}{\numberline {VII}Time Series Classification}{18}{section*.133}%
+\contentsline {subsection}{\numberline {A}The Grouping Problem and the Protocol}{19}{section*.134}%
+\contentsline {paragraph}{\numberline {a}Methodological response.}{19}{section*.135}%
+\contentsline {paragraph}{\numberline {b}Common protocol.}{19}{section*.137}%
+\contentsline {subsection}{\numberline {B}$k$-Nearest Neighbours: Euclidean, Manhattan, DTW}{19}{section*.138}%
+\contentsline {paragraph}{\numberline {a}Model and tuning.}{19}{section*.139}%
+\contentsline {paragraph}{\numberline {b}Results.}{19}{section*.140}%
+\contentsline {subsection}{\numberline {C}Shapelets: Retrieval, Analysis, and a Subject-Fingerprint Warning}{20}{section*.142}%
+\contentsline {paragraph}{\numberline {a}Model and tuning.}{20}{section*.143}%
+\contentsline {paragraph}{\numberline {b}Results and what the shapes reveal.}{20}{section*.144}%
+\contentsline {subsection}{\numberline {D}MiniRocket (Kernel/Convolution) and a Channel Ablation}{20}{section*.146}%
+\contentsline {paragraph}{\numberline {a}Model and tuning.}{20}{section*.147}%
+\contentsline {paragraph}{\numberline {b}Results.}{20}{section*.148}%
+\contentsline {subsection}{\numberline {E}MUSE (Dictionary-Based)}{21}{section*.149}%
+\contentsline {paragraph}{\numberline {a}Model and tuning.}{21}{section*.150}%
+\contentsline {paragraph}{\numberline {b}Results.}{21}{section*.151}%
+\contentsline {subsection}{\numberline {F}Comparison and Discussion}{21}{section*.152}%
+\contentsline {paragraph}{\numberline {a}Ordering and headline metric.}{21}{section*.158}%
+\contentsline {paragraph}{\numberline {b}The leakage gap.}{21}{section*.159}%
+\contentsline {paragraph}{\numberline {c}Interpretability hook (XAI).}{22}{section*.160}%
+\contentsline {paragraph}{\numberline {d}Overall.}{22}{section*.161}%
+\contentsline {section}{\numberline {VIII}Conclusion}{22}{section*.162}%
+\contentsline {paragraph}{\numberline {a}Time-series classification.}{22}{section*.163}%
+\contentsline {paragraph}{\numberline {b}Limitations and future work.}{22}{section*.164}%
+\contentsline {section}{\numberline {}References}{23}{section*.165}%

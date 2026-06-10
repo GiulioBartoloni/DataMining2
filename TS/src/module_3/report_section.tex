@@ -1,0 +1,250 @@
+% =====================================================================
+%  Module 3 --- Time Series Classification.
+%  Standalone section fragment, written to match report_dm2.tex conventions
+%  (\imgph placeholders, "Model and tuning" + "Results" paragraphs, consolidated
+%  comparison table, macro/balanced metrics, random_state=42, leakage discussion).
+%  \input this where the time-series part of the project is reported. If it is
+%  added to report_dm2.tex, update that report's Introduction, which currently
+%  scopes itself to the tabular modules and calls the time series a companion part.
+%  Real figures are in TS/src/module_3/figures/ (swap each \imgph for
+%  \includegraphics when assembling). Tables below are the auto-generated ones
+%  (figures/table_ts_clf.tex, table_ts_params.tex) with real numbers.
+% =====================================================================
+
+\section{Time Series Classification}
+This module addresses the project's time-series task: predicting the binarized
+Severity Impairment Index \texttt{sii\_binary} ($0$ = non-problematic, $1$ =
+problematic internet use) from wrist-worn accelerometer recordings. Each series is one
+\emph{subject-day} of five synchronized channels --- the three accelerometer axes
+\texttt{X,Y,Z}, the activity-intensity index \texttt{enmo}, and the arm-elevation angle
+\texttt{anglez} --- sampled to $200$ equal-length time steps. After the Module~0
+cleaning (non-wear and saturation filtering) the dataset holds $4{,}252$ series from
+only $326$ children. We define a single \textbf{binary classification task} and solve
+it with the four required method families: $k$-NN under multiple distances, shapelets,
+a kernel/convolution method (the ``at least one other'' requirement), and a
+dictionary-based method. Deep networks were deliberately excluded: the project's
+Python~3.14 environment has no TensorFlow wheels, and \texttt{aeon}'s deep classifiers
+are TensorFlow-based, so the ROCKET family and MUSE stand in for the high-capacity
+methods without a deep-learning backend.
+
+\subsection{The grouping problem and why it dictates the protocol}
+The single most important structural fact is that the $4{,}252$ series are roughly
+$13$ correlated days drawn from only $326$ subjects (median $11.5$ days per child, up to
+$36$), and \texttt{sii\_binary} is constant within a subject --- it is a
+\emph{subject-level} attribute, not a property of an individual day. Two consequences
+follow. First, the prevalence shifts with the unit of analysis: $32.9\%$ of
+\emph{series} are problematic but $36.8\%$ of \emph{subjects} are, because problematic
+children contribute slightly fewer days. Second, and decisively, a naive random split
+over the $4{,}252$ series places different days of the \emph{same} child --- which share
+an identical label and a near-identical activity signature (the same gait, wrist
+dominance, and device fit) --- in both train and test. That is textbook label leakage,
+and it is the time-series analogue of the PCIAT-exclusion argument made for the tabular
+data: just as the PCIAT total had to be kept out of the tabular features, here a
+child's other days must be kept out of the test fold.
+
+\paragraph{Methodological response.} Every design choice below flows from this fact.
+\emph{(i)} We split with \textbf{subject-grouped, stratified, nested cross-validation}
+(\texttt{StratifiedGroupKFold} at both the outer evaluation level, $5$ folds, and the
+inner tuning level, $3$ folds): a child's days never straddle train and test, nor the
+inner and outer loops. \emph{(ii)} Because the effective sample size is $\approx 326$
+independent label draws rather than $4{,}252$, a single split is noisy, so all headline
+numbers are reported as \textbf{mean $\pm$ std across the $5$ outer folds}. \emph{(iii)}
+Since the label lives at the subject level, the honest unit of evaluation is the
+\textbf{subject}: each day is classified, a child's day-probabilities are pooled by
+their mean, and metrics are computed over the $326$ subjects; series-level scores are
+reported only for completeness. \emph{(iv)} To neutralize the dominance of a few
+prolific subjects (the top fifth of children hold nearly half the series), we
+\textbf{day-cap} each subject to at most $10$ randomly chosen days (seed $42$), reducing
+the modelling set to $2{,}178$ series. The cap curbs the prolific-subject bias uniformly
+across methods and, as a bonus, bounds the cost of the pairwise-DTW computation. A fixed
+seed (\texttt{random\_state}$=42$) governs every stochastic step.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Three panels: (a) class balance at the series vs subject level (32.9\% vs
+    36.8\% problematic); (b) histogram of days-per-subject (median 11.5, max 36),
+    motivating the grouped split and the day cap; (c) one example series per class
+    across the five channels}
+    \caption{Time-series dataset: class balance, the per-subject day distribution that
+    forces grouped evaluation, and example series.}
+    \label{fig:ts_data}
+\end{figure}
+
+\paragraph{Common protocol.} All methods consume the same day-capped set
+($2{,}178$ series, shape $(2178, 5, 200)$, cast to \texttt{float64}), the same
+subject-grouped nested CV, and the same per-channel standardization (each of the five
+channels is $z$-scored, label-independently, so that \texttt{enmo} ($\sim[0,2.4]$) and
+\texttt{anglez} ($\sim[-90,90]$) --- two orders of magnitude apart --- contribute
+comparably to distance computations, while the physiologically meaningful per-axis
+offsets are preserved rather than destroyed by per-series normalization). Class
+imbalance is mild ($63/37$ at subject level) and handled with balanced class weights
+where supported. The reference point is a majority-class \texttt{DummyClassifier}
+(subject accuracy $0.632$, balanced accuracy $0.500$, problematic-class F1 $0$).
+
+\subsection{$k$-Nearest Neighbours: Euclidean, Manhattan, DTW}
+\paragraph{Model and tuning.} The project requires $k$-NN under at least two distances,
+one of them Dynamic Time Warping. We evaluate three: Euclidean and Manhattan (rigid,
+one-to-one alignment) and DTW (elastic alignment). To make DTW tractable we precompute
+the full pairwise distance matrix once per Sakoe--Chiba band width on the day-capped
+set; subject-grouped CV over any $k$ is then a cheap matrix lookup. The band width was
+swept over $\{2\%, 5\%, 10\%\}$ of the series length and the neighbour count over
+$k\in\{1,3,5,7,9\}$, selecting on inner-CV macro-F1.
+
+\paragraph{Results.} All three distances sit close to chance at the subject level
+(Table~\ref{tab:ts_clf}): Euclidean reaches AUC $0.475$, Manhattan $0.503$, and DTW
+$0.542$. DTW is the best of the three, and its band-width sweep peaks at the small
+$5\%$ window (subject F1 $0.243$ vs $0.161$ at $2\%$ and $0.147$ at $10\%$), exactly the
+narrow-band optimum the literature predicts --- a wider warping window only adds noise
+here. The broader message is the one anticipated by the grouping analysis: $k$-NN is the
+method most exposed to subject structure, because another day of the \emph{same} child
+is almost always a closer match than any other child. Once grouped evaluation removes
+that crutch, the raw shape distance between \emph{different} children carries little
+transferable signal, and even the elastic distance cannot recover it. The weak
+neighbourhood vote --- dominated by whichever capped subjects happen to be nearest ---
+is a direct illustration of the prolific-subject bias the cap can only partly mitigate.
+
+\begin{figure}[h]
+    \centering
+    \imgph{KNN-DTW Sakoe--Chiba band-width sweep: subject-level F1 vs window fraction
+    (2\%, 5\%, 10\%), peaking at the small 5\% band}
+    \caption{Effect of the DTW warping-band width on subject-level F1.}
+    \label{fig:ts_dtw}
+\end{figure}
+
+\subsection{Shapelets: retrieval, analysis, and a subject-fingerprint warning}
+\paragraph{Model and tuning.} A shapelet is a subsequence maximally discriminative for a
+class; the Shapelet Transform represents each series by its distances to a set of
+retrieved shapelets, after which any standard classifier can be trained. We retrieve
+shapelets with a \texttt{RandomShapeletTransform} (information-gain scored) and classify
+the transformed features with a balanced Random Forest. As a fast, modern counterpart we
+also run \texttt{RDST} (Random Dilated Shapelet Transform), which samples many dilated
+shapelets natively across channels.
+
+\paragraph{Results and what the shapes reveal.} RDST is competitive (AUC $0.620$,
+balanced accuracy $0.557$), but the interpretable Shapelet-Transform-plus-Forest
+pipeline is the most instructive negative result of the study. It attains a non-trivial
+ranking (AUC $0.619$) yet a problematic-class F1 of essentially zero at the default
+threshold --- the mean-pooling of a child's day-probabilities compresses them toward the
+prevalence, so few subjects cross $0.5$. More importantly, inspecting the retrieved
+shapelets directly confirms the risk flagged at the outset: the $20$ highest
+information-gain shapelets originate from only \emph{two} source subjects ($16$ of them
+from a single child), all on the \texttt{enmo} channel, with tiny absolute information
+gain ($\approx 0.014$). This is a \textbf{subject fingerprint masquerading as a class
+shapelet} --- the transform has latched onto one prolific child's idiosyncratic
+activity-intensity bursts rather than a generalizable signature of problematic use,
+which is precisely why it ranks reasonably in-distribution but fails to generalize. The
+finding both validates the methodological precaution (the cap and grouped evaluation
+keep the test metric honest) and is a concrete cautionary tale for shapelet
+interpretation on multi-day-per-subject data.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Top: the six highest information-gain shapelets, colored by the class of
+    their source series and labelled by channel/length. Bottom: the single best
+    shapelet localized on its source series. The top shapelets are dominated by the
+    \texttt{enmo} channel and by one prolific subject.}
+    \caption{Retrieved shapelets and the subject-fingerprint diagnosis.}
+    \label{fig:ts_shapelets}
+\end{figure}
+
+\subsection{MiniRocket (kernel/convolution) and a channel ablation}
+\paragraph{Model and tuning.} MiniRocket convolves each series with a large fixed bank
+of $\sim 10{,}000$ kernels and pools each activation map by its proportion of positive
+values, yielding a high-dimensional but cheap feature vector; we attach a balanced
+logistic head (tuned over the regularization strength $C$) so that calibrated
+probabilities are available for subject pooling and ROC analysis. The transform is
+natively multivariate over the five channels.
+
+\paragraph{Results.} MiniRocket is the strongest method on every headline metric ---
+subject AUC $0.645$, balanced accuracy $0.575$, problematic-class F1 $0.418\pm0.127$,
+and the best inner-CV macro-F1 ($0.555$) --- consistent with the benchmark consensus
+that ROCKET-family models reach near-top accuracy at a fraction of the cost of hybrids.
+The large fold-to-fold spread ($\pm 0.127$) is the honest signature of an effective
+sample size of $\approx 326$: with so few independent label draws, even the best model's
+subject metric varies substantially across folds. A channel ablation is revealing:
+restricting MiniRocket to the two classic actigraphy channels \texttt{enmo} and
+\texttt{anglez} retains most of the signal (AUC $0.605$ vs $0.645$), confirming that
+activity intensity and arm elevation --- not the raw accelerometer axes --- carry the
+bulk of whatever discriminative information exists.
+
+\subsection{MUSE (dictionary-based)}
+\paragraph{Model and tuning.} MUSE (WEASEL+MUSE) is a natively multivariate
+bag-of-SFA-symbols model: it converts each channel into symbolic words over multiple
+window lengths and classifies the resulting histogram with logistic regression. On the
+$15$\,GB, swap-less machine the default configuration exhausted memory, so we used a
+memory-safe setting (single-threaded, a coarser window grid, no bigrams or first-order
+differences) --- a tractability choice, documented for reproducibility.
+
+\paragraph{Results.} MUSE lands between the distance methods and the kernel method
+(subject AUC $0.590$, balanced accuracy $0.524$), offering a dictionary-based view that
+diversifies the method portfolio but does not match MiniRocket.
+
+\subsection{Comparison and discussion}
+Table~\ref{tab:ts_clf} consolidates the tuned results and Table~\ref{tab:ts_params}
+lists the selected configurations; Figure~\ref{fig:ts_compare} shows the subject-level
+metrics with fold variability and the ROC/PR and confusion-matrix views.
+
+\input{TS/src/module_3/figures/table_ts_clf.tex}
+
+\input{TS/src/module_3/figures/table_ts_params.tex}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Grouped bar chart of subject-level F1, AUC, and balanced accuracy per method
+    (mean $\pm$ std over the 5 outer folds), with a chance line at 0.5}
+    \caption{Subject-level performance across methods (mean $\pm$ std over folds).}
+    \label{fig:ts_compare}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Left: subject-level ROC curves for all methods with AUC in the legend.
+    Right: subject-level precision--recall curves with the prevalence baseline.}
+    \caption{Subject-level ROC and precision--recall curves.}
+    \label{fig:ts_roc}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Grid of subject-level confusion matrices (pooled out-of-fold predictions),
+    one per method}
+    \caption{Subject-level confusion matrices (pooled out-of-fold).}
+    \label{fig:ts_cm}
+\end{figure}
+
+\paragraph{Ordering and headline metric.} Because mean-pooling compresses
+probabilities, F1 at a fixed $0.5$ threshold is fragile (most visibly for
+Shapelet-Transform-plus-Forest, which ranks well by AUC yet predicts almost no
+positives); we therefore read the ranking primarily off AUC and balanced accuracy. On
+those, the order is clear: \textbf{MiniRocket} $(0.645)$ $>$ \textbf{RDST} $(0.620)
+\approx$ \textbf{Shapelet} $(0.619)$ $>$ \textbf{MUSE} $(0.590)$ $>$ \textbf{KNN-DTW}
+$(0.542)$ $>$ Manhattan $>$ Euclidean, with the dummy at $0.500$. The story mirrors the
+benchmark literature and the report's tabular narrative: a cheap distance baseline that
+barely separates the classes, an interpretable shapelet method that exposes a data
+pathology, and a fast convolutional kernel method that is the strongest learner.
+
+\paragraph{The leakage gap.} To quantify the cost of ignoring subject structure, we ran
+the same KNN-Euclidean model under a naive (ungrouped) stratified split and under the
+correct grouped split. The naive split inflates series-level macro-F1 from
+$0.482\pm0.022$ to $0.509\pm0.011$ (a $+0.027$ optimism). The gap is modest precisely
+because the day cap has already removed most of the redundant same-subject days that a
+naive split would exploit; on the full, uncapped data the leakage would be larger. Even
+so, it confirms the direction of the bias and the necessity of grouping.
+
+\paragraph{Interpretability hook (XAI).} Unlike the black-box kernel and dictionary
+models, shapelets are intrinsically interpretable --- each feature is a distance to a
+concrete, plottable shape --- which is why they double as the module's explainability
+analysis and tie back to the SHAP/LIME treatment of the tabular models. Here that lens
+delivered an unusually candid result: the most ``discriminative'' shapes were not a
+clinical signature but one child's \texttt{enmo} fingerprint, a reminder that
+interpretability is only trustworthy once the subject-grouping confound is controlled.
+
+\paragraph{Overall.} The accelerometer signal is weakly but genuinely predictive of
+problematic-internet-use severity: the best model clears chance by a clear margin
+(subject AUC $0.645$) where distance baselines do not, and the discriminative signal
+concentrates in the activity-intensity and arm-elevation channels. Yet the ceiling is
+low and fold variance is high, both consequences of having only $\approx 326$
+independent subjects. This echoes the tabular conclusion --- a real but modest signal,
+honestly bounded by sample size and intrinsic difficulty --- and supports the project's
+closing suggestion that fusing the behavioral time-series representation with the
+tabular features is the most promising direction.

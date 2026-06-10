@@ -216,7 +216,7 @@
 
 This project presents a detailed advanced data mining and machine learning analysis of the \emph{Child Mind Institute (CMI) --- Problematic Internet Use} dataset \cite{cmi}. The central question motivating the original competition is whether the level of problematic internet usage exhibited by children and adolescents can be predicted from physical activity, fitness, and body-composition measurements. Identifying such patterns early can help trigger interventions that encourage healthier digital habits.\\
 
-\paragraph{Project scope.} The CMI project is built around two complementary data modalities that are analyzed independently and reported in two parts: (i) a \textbf{tabular dataset} of demographic, physical, fitness, and bio-impedance measurements, and (ii) a \textbf{time-series dataset} of wrist-worn accelerometer recordings. This report documents the \textbf{tabular dataset}, which spans the project's first three modules: Module~0 (Data Understanding \& Preparation), Module~1 (Advanced Data Preprocessing --- anomaly detection, dimensionality reduction, and imbalanced learning), and Module~2 (Advanced Classification, Regression, and Explainability). The time-series analysis (Module~3) is treated separately in the companion part of the project and is therefore out of scope here.\\
+\paragraph{Project scope.} The CMI project is built around two complementary data modalities: (i) a \textbf{tabular dataset} of demographic, physical, fitness, and bio-impedance measurements, and (ii) a \textbf{time-series dataset} of wrist-worn accelerometer recordings. This report covers \textbf{both}. The tabular analysis spans the project's first three modules: Module~0 (Data Understanding \& Preparation), Module~1 (Advanced Data Preprocessing --- anomaly detection, dimensionality reduction, and imbalanced learning), and Module~2 (Advanced Classification, Regression, and Explainability). The time-series analysis (Module~3, Section~\ref{sec:ts}) then defines and solves a classification task on the accelerometer recordings. The two modalities are processed with independent pipelines and drawn together in the conclusion.\\
 
 \paragraph{Context.} The dataset used here is a modified version of the original CMI release: some original missing values were altered and synthetic samples were added. This makes the data both noisy and partly artificial, which is realistic for a community-collected clinical-style dataset and provides an excellent testbed for the advanced preprocessing techniques required by the course.\\
 
@@ -231,6 +231,7 @@ From a data mining perspective the dataset poses several challenges. First, \emp
     \item \textbf{Advanced classification:} predict the Severity Impairment Index (\texttt{sii}) with Logistic Regression, Support Vector Machines, Neural Networks, AdaBoost, and Gradient Boosting, with full hyper-parameter tuning.
     \item \textbf{Advanced regression:} model the continuous internet-use score with two non-linear regressors.
     \item \textbf{Explainability (XAI):} interpret the models with SHAP, LIME, and permutation importance.
+    \item \textbf{Time-series classification:} predict the binarized severity index from the wrist-accelerometer recordings with $k$-NN (Euclidean/Manhattan/DTW), shapelets, MiniRocket, and MUSE, under a subject-grouped, leakage-free evaluation protocol.
 \end{itemize}
 
 Together these tasks move from descriptive data understanding to predictive modeling and finally to interpretation, giving a comprehensive view of how physical and behavioral characteristics relate to problematic internet use.\\
@@ -870,15 +871,188 @@ C --- ADASYN   & 0.327 & \textbf{0.582} & 0.313 & \textbf{0.118} \\
 
 \paragraph{Takeaway.} This is a legitimate \emph{negative} result: on a dataset this small and noisy, fabricating $\sim 4{,}500$ synthetic \texttt{Severe} points (a $68\times$ extrapolation of $66$ training examples) into a feature space that already contains instructor-injected synthetic samples buys a marginal gain in minority recall while degrading the balanced metric, and risks interpolating physiologically implausible profiles. Simple class weighting remains the better-behaved choice here, and the experiment also serves as a clean, in-sample demonstration of why resampling must live inside the cross-validation loop.
 
+\section{Time Series Data and Preprocessing}
+\label{sec:ts_prep}
+This section documents the data-understanding and preparation stage for the time-series modality --- the counterpart, for the wrist-accelerometer recordings, of the tabular Modules~0--1 above. It describes the raw dataset and the cleaning pipeline that produces the modelling input consumed by the classification of Section~\ref{sec:ts}.
+
+\subsection{Dataset Description}
+The raw time-series dataset \cite{cmi} contains $4{,}437$ recordings, each a fixed-length window of $200$ equal time steps and $13$ columns. Five of these are \textbf{signal channels}: the tri-axial accelerometer readings \texttt{X,Y,Z} (in $g$), the Euclidean Norm Minus One \texttt{enmo} (in $g$, clipped at $0$; a standard scalar summary of overall activity intensity), and \texttt{anglez} (the arm-elevation angle, in degrees). The remaining columns are the subject identifier \texttt{id}, the binary target \texttt{sii\_binary}, and six metadata fields (\texttt{non-wear\_flag}, \texttt{light}, \texttt{battery\_voltage}, \texttt{weekday}, \texttt{quarter}, \texttt{relative\_date\_PCIAT}). As in the tabular part the target derives from the Severity Impairment Index, here \emph{binarized} to $\{0\}$ (non-problematic) versus $\{1,2,3\}$ (problematic).
+
+\paragraph{One series is one subject-day.} A bundled instruction file describes each series as the average signal over $30$-minute intervals, which for $200$ steps would span more than four days; this is contradicted by the data. The fields \texttt{weekday}, \texttt{quarter}, and \texttt{relative\_date\_PCIAT} are each \emph{constant} within every one of the $4{,}437$ series, so a single series cannot straddle multiple days: each series is one \textbf{subject-day} ($\sim$7-minute epochs). The exact epoch length does not affect the methodology, but the one-day-per-series fact is the foundation of the subject-grouped evaluation in Section~\ref{sec:ts}: a subject contributes many such daily series, all sharing the same subject-level label.
+
+\subsection{Missing Values and Column Selection}
+In sharp contrast to the pervasive missingness of the tabular data, the signal is complete: \texttt{enmo} contains \emph{zero} \texttt{NaN}s across all $4{,}437\times200$ points, so no imputation is required. Column selection then keeps the five signal channels plus \texttt{id} and the target, and drops the five metadata fields that are \emph{constant within a series} (\texttt{light}, \texttt{battery\_voltage}, \texttt{weekday}, \texttt{quarter}, \texttt{relative\_date\_PCIAT}): because each series is a single day, these carry no within-series information. The \texttt{non-wear\_flag} is retained transiently for the next step and then dropped, as it is identically zero once only fully-worn series are kept.
+
+\subsection{Non-wear Filtering}
+The \texttt{non-wear\_flag} is a value in $[0,1]$ giving the fraction of each $\sim$7-minute epoch during which the device was off the wrist. Off-body epochs are flat, non-physiological readings that would contaminate any distance or feature computation. Rather than patch individual off-body epochs, we keep only series that were \textbf{fully worn all day} (\texttt{non-wear\_flag}$=0$ at every epoch). This is the principled treatment because non-wear is explicitly \emph{labelled}: the affected series are dropped outright instead of mixing real signal with sensor-off artifacts. The filter keeps $4{,}258/4{,}437$ series ($96.0\%$), discarding $179$; it also removes the subjects whose every recorded day contained some non-wear, reducing the cohort from $494$ to $326$ children.
+
+\subsection{Physically-Impossible Spike Removal}
+\paragraph{Why not a Hampel filter.} A Hampel filter flags a point deviating from its local rolling median by more than $n_\sigma\cdot1.4826\cdot\mathrm{MAD}$, assuming a locally smooth signal with Gaussian-like noise. \texttt{enmo} violates both assumptions: it is a sparse, heavy-tailed activity signal --- mostly near-zero during rest, punctuated by genuine movement bursts. Two failure modes follow: in rest windows the MAD collapses toward zero, so trivial fluctuations get flagged; and real activity bursts exceed the local median by far more than $n_\sigma\cdot\mathrm{MAD}$. Empirically a Hampel filter (window $7$, $n_\sigma=3$) flags $7$--$12\%$ of all points, and using ``any flagged point'' to drop whole series removes $74$--$96\%$ of the dataset, because essentially every series contains a movement burst. The flag cannot separate a physically-impossible artifact from normal vigorous activity, because it discards the one thing that distinguishes them --- absolute magnitude. We therefore reject it.
+
+\paragraph{A magnitude-and-isolation rule.} Since each epoch is a $\sim$7-minute average, \texttt{enmo} has a hard physiological ceiling: even sustained vigorous exercise rarely averages above $\sim0.5\,g$, and a $7$-minute average cannot reach $\sim1.5\,g$ from human wrist motion --- such values are sensor saturation/clipping. We score each \emph{series} by its peak \texttt{enmo} and an \textbf{isolation} ratio, $\text{peak}/\max(\text{immediate neighbours})$: a glitch spikes alone (ratio $\gg 1$), whereas genuine activity is sustained across several epochs (ratio $\approx 1$). A series is removed if \emph{either} (1)~$\text{peak}>3.0\,g$ unconditionally (a value impossible as a $7$-minute average under any motion --- saturation/clipping), or (2)~$\text{peak}>1.5\,g$ \emph{and} isolation $>5$ (an isolated, physically-implausible glitch). The unconditional ceiling is essential: one of the two textbook $7.03\,g$ clips present here is preceded by an elevated epoch, giving it an isolation ratio of only $\sim3.7$, so the isolation test alone would let it survive. This rule removes only $6$ series while sparing sustained high-activity series whose elevated peaks are corroborated by their neighbours.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Inspection of the spike-removal rule: \texttt{enmo} traces of the removed saturation/clipping artifacts (e.g.\ the two identical 7.03\,g clips, isolated spikes) overlaid against retained sustained-high-activity series (elevated but with neighbouring support), illustrating the peak-vs-isolation decision}
+    \caption{Physically-impossible \texttt{enmo} spikes (removed) versus genuine sustained activity (retained).}
+    \label{fig:ts_spikes}
+\end{figure}
+
+\subsection{Cleaned Dataset}
+The cleaning funnel is summarized in Table~\ref{tab:ts_funnel}: $4{,}437$ raw series are reduced to $4{,}258$ fully-worn and then $4{,}252$ artifact-free series, a total reduction of only $4.17\%$, concentrated entirely on sensor-off and saturation records rather than on genuine signal. The result is a list of $4{,}252$ series, each $200$ time steps over the five channels \texttt{X,Y,Z,enmo,anglez} with its \texttt{id} and \texttt{sii\_binary}, which is the input to the classification task of Section~\ref{sec:ts}.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Time-series cleaning funnel (series dropped only for non-wear or saturation artifacts).}
+\label{tab:ts_funnel}
+\begin{tabular}{l c c}
+\hline
+Stage & Series & Subjects \\
+\hline
+Raw                            & 4{,}437 & 494 \\
+Fully worn (non-wear filter)   & 4{,}258 & 326 \\
+Artifact-free (spike removal)  & 4{,}252 & 326 \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Time Series Classification}
+\label{sec:ts}
+This module addresses the project's time-series task: predicting the binarized Severity Impairment Index \texttt{sii\_binary} ($0$ = non-problematic, $1$ = problematic internet use) from wrist-worn accelerometer recordings. Each series is one \emph{subject-day} of five synchronized channels --- the three accelerometer axes \texttt{X,Y,Z}, the activity-intensity index \texttt{enmo}, and the arm-elevation angle \texttt{anglez} --- sampled to $200$ equal-length time steps. After the cleaning of Section~\ref{sec:ts_prep} (non-wear and saturation filtering) the dataset holds $4{,}252$ series from only $326$ children. We define a single \textbf{binary classification task} and solve it with the four required method families: $k$-NN under multiple distances, shapelets, a kernel/convolution method (the ``at least one other'' requirement), and a dictionary-based method. Deep networks were deliberately excluded: the project's Python~3.14 environment has no TensorFlow wheels, and \texttt{aeon}'s deep classifiers are TensorFlow-based, so the ROCKET family and MUSE stand in for the high-capacity methods without a deep-learning backend.
+
+\subsection{The Grouping Problem and the Protocol}
+The single most important structural fact is that the $4{,}252$ series are roughly $13$ correlated days drawn from only $326$ subjects (median $11.5$ days per child, up to $36$), and \texttt{sii\_binary} is constant within a subject --- it is a \emph{subject-level} attribute, not a property of an individual day. Two consequences follow. First, the prevalence shifts with the unit of analysis: $32.9\%$ of \emph{series} are problematic but $36.8\%$ of \emph{subjects} are, because problematic children contribute slightly fewer days. Second, and decisively, a naive random split over the $4{,}252$ series places different days of the \emph{same} child --- which share an identical label and a near-identical activity signature (the same gait, wrist dominance, and device fit) --- in both train and test. That is textbook label leakage, and it is the time-series analogue of the PCIAT-exclusion argument made for the tabular data: just as the PCIAT total had to be kept out of the tabular features, here a child's other days must be kept out of the test fold.
+
+\paragraph{Methodological response.} Every design choice below flows from this fact. \emph{(i)} We split with \textbf{subject-grouped, stratified, nested cross-validation} (\texttt{StratifiedGroupKFold} at both the outer evaluation level, $5$ folds, and the inner tuning level, $3$ folds): a child's days never straddle train and test, nor the inner and outer loops. \emph{(ii)} Because the effective sample size is $\approx 326$ independent label draws rather than $4{,}252$, a single split is noisy, so all headline numbers are reported as \textbf{mean $\pm$ std across the $5$ outer folds}. \emph{(iii)} Since the label lives at the subject level, the honest unit of evaluation is the \textbf{subject}: each day is classified, a child's day-probabilities are pooled by their mean, and metrics are computed over the $326$ subjects; series-level scores are reported only for completeness. \emph{(iv)} To neutralize the dominance of a few prolific subjects (the top fifth of children hold nearly half the series), we \textbf{day-cap} each subject to at most $10$ randomly chosen days (seed $42$), reducing the modelling set to $2{,}178$ series. The cap curbs the prolific-subject bias uniformly across methods and, as a bonus, bounds the cost of the pairwise-DTW computation. A fixed seed (\texttt{random\_state}$=42$) governs every stochastic step.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Three panels: (a) class balance at the series vs subject level (32.9\% vs 36.8\% problematic); (b) histogram of days-per-subject (median 11.5, max 36), motivating the grouped split and the day cap; (c) one example series per class across the five channels}
+    \caption{Time-series dataset: class balance, the per-subject day distribution that forces grouped evaluation, and example series.}
+    \label{fig:ts_data}
+\end{figure}
+
+\paragraph{Common protocol.} All methods consume the same day-capped set ($2{,}178$ series, shape $(2178, 5, 200)$, cast to \texttt{float64}), the same subject-grouped nested CV, and the same per-channel standardization (each of the five channels is $z$-scored, label-independently, so that \texttt{enmo} ($\sim[0,2.4]$) and \texttt{anglez} ($\sim[-90,90]$) --- two orders of magnitude apart --- contribute comparably to distance computations, while the physiologically meaningful per-axis offsets are preserved rather than destroyed by per-series normalization). Class imbalance is mild ($63/37$ at subject level) and handled with balanced class weights where supported. The reference point is a majority-class \texttt{DummyClassifier} (subject accuracy $0.632$, balanced accuracy $0.500$, problematic-class F1 $0$).
+
+\subsection{$k$-Nearest Neighbours: Euclidean, Manhattan, DTW}
+\paragraph{Model and tuning.} The project requires $k$-NN under at least two distances, one of them Dynamic Time Warping. We evaluate three: Euclidean and Manhattan (rigid, one-to-one alignment) and DTW (elastic alignment). To make DTW tractable we precompute the full pairwise distance matrix once per Sakoe--Chiba band width on the day-capped set; subject-grouped CV over any $k$ is then a cheap matrix lookup. The band width was swept over $\{2\%, 5\%, 10\%\}$ of the series length and the neighbour count over $k\in\{1,3,5,7,9\}$, selecting on inner-CV macro-F1.
+
+\paragraph{Results.} All three distances sit close to chance at the subject level (Table~\ref{tab:ts_clf}): Euclidean reaches AUC $0.475$, Manhattan $0.503$, and DTW $0.542$. DTW is the best of the three, and its band-width sweep peaks at the small $5\%$ window (subject F1 $0.243$ vs $0.161$ at $2\%$ and $0.147$ at $10\%$), exactly the narrow-band optimum the literature predicts --- a wider warping window only adds noise here. The broader message is the one anticipated by the grouping analysis: $k$-NN is the method most exposed to subject structure, because another day of the \emph{same} child is almost always a closer match than any other child. Once grouped evaluation removes that crutch, the raw shape distance between \emph{different} children carries little transferable signal, and even the elastic distance cannot recover it. The weak neighbourhood vote --- dominated by whichever capped subjects happen to be nearest --- is a direct illustration of the prolific-subject bias the cap can only partly mitigate.
+
+\begin{figure}[h]
+    \centering
+    \imgph{KNN-DTW Sakoe--Chiba band-width sweep: subject-level F1 vs window fraction (2\%, 5\%, 10\%), peaking at the small 5\% band}
+    \caption{Effect of the DTW warping-band width on subject-level F1.}
+    \label{fig:ts_dtw}
+\end{figure}
+
+\subsection{Shapelets: Retrieval, Analysis, and a Subject-Fingerprint Warning}
+\paragraph{Model and tuning.} A shapelet is a subsequence maximally discriminative for a class; the Shapelet Transform represents each series by its distances to a set of retrieved shapelets, after which any standard classifier can be trained. We retrieve shapelets with a \texttt{RandomShapeletTransform} (information-gain scored) and classify the transformed features with a balanced Random Forest. As a fast, modern counterpart we also run \texttt{RDST} (Random Dilated Shapelet Transform), which samples many dilated shapelets natively across channels.
+
+\paragraph{Results and what the shapes reveal.} RDST is competitive (AUC $0.620$, balanced accuracy $0.557$), but the interpretable Shapelet-Transform-plus-Forest pipeline is the most instructive negative result of the study. It attains a non-trivial ranking (AUC $0.619$) yet a problematic-class F1 of essentially zero at the default threshold --- the mean-pooling of a child's day-probabilities compresses them toward the prevalence, so few subjects cross $0.5$. More importantly, inspecting the retrieved shapelets directly confirms the risk flagged at the outset: the $20$ highest information-gain shapelets originate from only \emph{two} source subjects ($16$ of them from a single child), all on the \texttt{enmo} channel, with tiny absolute information gain ($\approx 0.014$). This is a \textbf{subject fingerprint masquerading as a class shapelet} --- the transform has latched onto one prolific child's idiosyncratic activity-intensity bursts rather than a generalizable signature of problematic use, which is precisely why it ranks reasonably in-distribution but fails to generalize. The finding both validates the methodological precaution (the cap and grouped evaluation keep the test metric honest) and is a concrete cautionary tale for shapelet interpretation on multi-day-per-subject data.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Top: the six highest information-gain shapelets, colored by the class of their source series and labelled by channel/length. Bottom: the single best shapelet localized on its source series. The top shapelets are dominated by the \texttt{enmo} channel and by one prolific subject.}
+    \caption{Retrieved shapelets and the subject-fingerprint diagnosis.}
+    \label{fig:ts_shapelets}
+\end{figure}
+
+\subsection{MiniRocket (Kernel/Convolution) and a Channel Ablation}
+\paragraph{Model and tuning.} MiniRocket convolves each series with a large fixed bank of $\sim 10{,}000$ kernels and pools each activation map by its proportion of positive values, yielding a high-dimensional but cheap feature vector; we attach a balanced logistic head (tuned over the regularization strength $C$) so that calibrated probabilities are available for subject pooling and ROC analysis. The transform is natively multivariate over the five channels.
+
+\paragraph{Results.} MiniRocket is the strongest method on every headline metric --- subject AUC $0.645$, balanced accuracy $0.575$, problematic-class F1 $0.418\pm0.127$, and the best inner-CV macro-F1 ($0.555$) --- consistent with the benchmark consensus that ROCKET-family models reach near-top accuracy at a fraction of the cost of hybrids. The large fold-to-fold spread ($\pm 0.127$) is the honest signature of an effective sample size of $\approx 326$: with so few independent label draws, even the best model's subject metric varies substantially across folds. A channel ablation is revealing: restricting MiniRocket to the two classic actigraphy channels \texttt{enmo} and \texttt{anglez} retains most of the signal (AUC $0.605$ vs $0.645$), confirming that activity intensity and arm elevation --- not the raw accelerometer axes --- carry the bulk of whatever discriminative information exists.
+
+\subsection{MUSE (Dictionary-Based)}
+\paragraph{Model and tuning.} MUSE (WEASEL+MUSE) is a natively multivariate bag-of-SFA-symbols model: it converts each channel into symbolic words over multiple window lengths and classifies the resulting histogram with logistic regression. On the $15$\,GB, swap-less machine the default configuration exhausted memory, so we used a memory-safe setting (single-threaded, a coarser window grid, no bigrams or first-order differences) --- a tractability choice, documented for reproducibility.
+
+\paragraph{Results.} MUSE lands between the distance methods and the kernel method (subject AUC $0.590$, balanced accuracy $0.524$), offering a dictionary-based view that diversifies the method portfolio but does not match MiniRocket.
+
+\subsection{Comparison and Discussion}
+Table~\ref{tab:ts_clf} consolidates the tuned results and Table~\ref{tab:ts_params} lists the selected configurations; Figure~\ref{fig:ts_compare} shows the subject-level metrics with fold variability and the ROC/PR and confusion-matrix views.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Time-series classifiers on the day-capped set, subject-grouped nested CV. Subject-level metrics are the headline (mean over 5 outer folds); CV F1 is the mean inner macro-F1 of the selected models.}
+\label{tab:ts_clf}
+\begin{tabular}{l c c c c}
+\hline
+Model & CV F1 & Subj F1 & Subj AUC & Subj bal-acc \\
+\hline
+KNN (Euclidean) & 0.498 & 0.281 & 0.475 & 0.485 \\
+KNN (Manhattan) & 0.496 & 0.274 & 0.503 & 0.516 \\
+KNN (DTW) & 0.496 & 0.243 & 0.542 & 0.514 \\
+Shapelet Transform + RF & -- & 0.045 & 0.619 & 0.505 \\
+RDST (shapelet) & -- & 0.323 & 0.620 & 0.557 \\
+MiniRocket & \textbf{0.555} & \textbf{0.418} & \textbf{0.645} & \textbf{0.575} \\
+MUSE & -- & 0.224 & 0.590 & 0.524 \\
+Dummy (majority) & -- & 0.000 & 0.500 & 0.500 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Best configuration per method (subject-grouped CV).}
+\label{tab:ts_params}
+\begin{tabular}{l l}
+\hline
+Model & Best configuration \\
+\hline
+KNN (Euclidean) & $k$=1, weights=uniform \\
+KNN (Manhattan) & $k$=3, weights=uniform \\
+KNN (DTW) & $k$=1, weights=uniform \\
+Shapelet Transform + RF & max\_shapelets=60, n\_shapelet\_samples=2000 \\
+RDST (shapelet) & max\_shapelets=10000 \\
+MiniRocket & $C$=0.1, n\_kernels=10000 \\
+MUSE & defaults (window\_inc=4, no bigrams/diff) \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Grouped bar chart of subject-level F1, AUC, and balanced accuracy per method (mean $\pm$ std over the 5 outer folds), with a chance line at 0.5}
+    \caption{Subject-level performance across methods (mean $\pm$ std over folds).}
+    \label{fig:ts_compare}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Left: subject-level ROC curves for all methods with AUC in the legend. Right: subject-level precision--recall curves with the prevalence baseline.}
+    \caption{Subject-level ROC and precision--recall curves.}
+    \label{fig:ts_roc}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Grid of subject-level confusion matrices (pooled out-of-fold predictions), one per method}
+    \caption{Subject-level confusion matrices (pooled out-of-fold).}
+    \label{fig:ts_cm}
+\end{figure}
+
+\paragraph{Ordering and headline metric.} Because mean-pooling compresses probabilities, F1 at a fixed $0.5$ threshold is fragile (most visibly for Shapelet-Transform-plus-Forest, which ranks well by AUC yet predicts almost no positives); we therefore read the ranking primarily off AUC and balanced accuracy. On those, the order is clear: \textbf{MiniRocket} $(0.645)$ $>$ \textbf{RDST} $(0.620) \approx$ \textbf{Shapelet} $(0.619)$ $>$ \textbf{MUSE} $(0.590)$ $>$ \textbf{KNN-DTW} $(0.542)$ $>$ Manhattan $>$ Euclidean, with the dummy at $0.500$. The story mirrors the benchmark literature and the report's tabular narrative: a cheap distance baseline that barely separates the classes, an interpretable shapelet method that exposes a data pathology, and a fast convolutional kernel method that is the strongest learner.
+
+\paragraph{The leakage gap.} To quantify the cost of ignoring subject structure, we ran the same KNN-Euclidean model under a naive (ungrouped) stratified split and under the correct grouped split. The naive split inflates series-level macro-F1 from $0.482\pm0.022$ to $0.509\pm0.011$ (a $+0.027$ optimism). The gap is modest precisely because the day cap has already removed most of the redundant same-subject days that a naive split would exploit; on the full, uncapped data the leakage would be larger. Even so, it confirms the direction of the bias and the necessity of grouping.
+
+\paragraph{Interpretability hook (XAI).} Unlike the black-box kernel and dictionary models, shapelets are intrinsically interpretable --- each feature is a distance to a concrete, plottable shape --- which is why they double as the module's explainability analysis and tie back to the SHAP/LIME treatment of the tabular models. Here that lens delivered an unusually candid result: the most ``discriminative'' shapes were not a clinical signature but one child's \texttt{enmo} fingerprint, a reminder that interpretability is only trustworthy once the subject-grouping confound is controlled.
+
+\paragraph{Overall.} The accelerometer signal is weakly but genuinely predictive of problematic-internet-use severity: the best model clears chance by a clear margin (subject AUC $0.645$) where distance baselines do not, and the discriminative signal concentrates in the activity-intensity and arm-elevation channels. Yet the ceiling is low and fold variance is high, both consequences of having only $\approx 326$ independent subjects. This echoes the tabular conclusion --- a real but modest signal, honestly bounded by sample size and intrinsic difficulty --- and supports the project's closing suggestion that fusing the behavioral time-series representation with the tabular features is the most promising direction.
+
 \section{Conclusion}
 
-This report documented the tabular-dataset analysis of the Child Mind Institute Problematic Internet Use project, spanning data understanding and preparation, advanced preprocessing, and advanced supervised modeling with explainability.\\
+This report documented both parts of the Child Mind Institute Problematic Internet Use project: the tabular-dataset analysis --- spanning data understanding and preparation, advanced preprocessing, and advanced supervised modeling with explainability --- and the time-series classification of the wrist-worn accelerometer recordings.\\
 
 In preparation we corrected physically impossible values, imputed pervasive missingness with leakage-aware MICE, engineered compact composite features, and reduced a heavily redundant bio-impedance panel, retaining $97.6\%$ of the records. In preprocessing, four anomaly detectors from distinct families were combined into a conservative consensus that removed $0.80\%$ of records, and a controlled imbalanced-learning study exposed the accuracy/recall trade-offs of undersampling and oversampling. In modeling, five tuned classifiers and two non-linear regressors were evaluated under an identical, leakage-free protocol; SHAP/LIME/permutation analyses identified self-reported internet hours and global functioning as the dominant predictors; and a closing experiment showed that data-level oversampling (ADASYN) does not improve the strongest model over simple class weighting, while confirming that resampling inside the cross-validation folds removes the optimism that had inflated the Module~1 scores.\\
 
-The principal finding is that the severity of problematic internet use is only weakly predictable from physical, fitness, and body-composition measurements alone: macro-F1 plateaus around $0.30$ and regression explains roughly half the variance, with the rare \texttt{Severe} class essentially unlearnable from these features. Errors concentrate between adjacent ordinal levels, pointing to an ordinal-regression reformulation and to the behavioral/accelerometer signal --- analyzed in the project's companion time-series part --- as the more promising source of predictive power.\\
+The principal finding is that the severity of problematic internet use is only weakly predictable from physical, fitness, and body-composition measurements alone: macro-F1 plateaus around $0.30$ and regression explains roughly half the variance, with the rare \texttt{Severe} class essentially unlearnable from these features. Errors concentrate between adjacent ordinal levels, pointing to an ordinal-regression reformulation and to the behavioral/accelerometer signal --- analyzed in the time-series part (Section~\ref{sec:ts}) --- as a complementary source of predictive power.\\
 
-\paragraph{Limitations and future work.} Several factors bound the results obtained here. First, the synthetic perturbation of the dataset injects noise and exact-duplicate records that no preprocessing can fully recover, and the small absolute size of the \texttt{Severe} class ($83$ records overall, $17$ in the test set) makes that class statistically fragile regardless of resampling. Second, the four-class target was modeled as a flat multiclass problem; an explicitly ordinal model (e.g.\ ordinal logistic regression or a cumulative-link formulation) would better match the structure revealed by the confusion matrices. Third, the regression target is itself partly imputed, which caps the attainable $R^2$. Promising extensions include cost-sensitive learning calibrated to clinical priorities, threshold optimization on the predicted-probability simplex, and --- most importantly --- fusing the tabular features with the wrist-sensor time-series representation studied in the companion part of the project, where the behavioral signal most directly related to internet use resides.
+\paragraph{Time-series classification.} On the accelerometer recordings the same story emerges from the other side. A subject-grouped evaluation --- mandatory because the $4{,}252$ daily series come from only $326$ children --- shows distance-based $k$-NN barely clearing chance, while a convolutional kernel model (MiniRocket) is the strongest learner (subject-level AUC $0.645$), with the discriminative signal concentrated in the activity-intensity (\texttt{enmo}) and arm-elevation (\texttt{anglez}) channels. The retrieved shapelets turned out to be dominated by a single prolific subject's fingerprint rather than a class signature, a cautionary result that the grouped protocol was explicitly designed to expose. The behavioral signal is therefore real but, like the tabular one, modest and bounded by the small number of independent subjects.\\
+
+\paragraph{Limitations and future work.} Several factors bound the results obtained here. First, the synthetic perturbation of the dataset injects noise and exact-duplicate records that no preprocessing can fully recover, and the small absolute size of the \texttt{Severe} class ($83$ records overall, $17$ in the test set) makes that class statistically fragile regardless of resampling. Second, the four-class target was modeled as a flat multiclass problem; an explicitly ordinal model (e.g.\ ordinal logistic regression or a cumulative-link formulation) would better match the structure revealed by the confusion matrices. Third, the regression target is itself partly imputed, which caps the attainable $R^2$. Promising extensions include cost-sensitive learning calibrated to clinical priorities, threshold optimization on the predicted-probability simplex, and --- most importantly --- fusing the tabular features with the wrist-sensor time-series representation analyzed in Section~\ref{sec:ts}, combining the two complementary signals studied in this report, where the behavioral signal most directly related to internet use resides.
 
 \newpage
 

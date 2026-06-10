@@ -1,0 +1,19 @@
+\begin{table}[H]
+\centering
+\small
+\caption{Best configuration per method (subject-grouped CV).}
+\label{tab:ts_params}
+\begin{tabular}{l l}
+\hline
+Model & Best configuration \\
+\hline
+KNN (Euclidean) & k=1, weights=uniform \\
+KNN (Manhattan) & k=3, weights=uniform \\
+KNN (DTW) & k=1, weights=uniform \\
+Shapelet Transform + RF & max\_shapelets=60, n\_shapelet\_samples=2000 \\
+RDST (shapelet) & max\_shapelets=10000 \\
+MiniRocket & C=0.1, n\_kernels=10000 \\
+MUSE & defaults (window\_inc=4, no bigrams/diff) \\
+\hline
+\end{tabular}
+\end{table}

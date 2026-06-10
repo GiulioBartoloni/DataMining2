@@ -1,0 +1,274 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\gdef \tocmax@section{5.0pt}
+\gdef \tocmax@subsection{5.0pt}
+\gdef \tocmax@subsubsection{5.0pt}
+\gdef \tocmax@paragraph{5.0pt}
+\gdef \tocmax@appendix{5.0pt}
+\gdef \tocmax@pagenum{5.0pt}
+\newlabel{FirstPage}{{}{1}{}{Doc-Start}{}}
+\@writefile{toc}{\contentsline {title}{Data Mining 2 \\ Child Mind Institute --- Predicting Problematic Internet Use in Children and Adolescents: Advanced Preprocessing, Machine Learning, and Explainability}{1}{section*.1}\protected@file@percent }
+\@writefile{toc}{\tocdepth@munge}
+\@writefile{toc}{\contentsline {section}{\numberline {}Contents}{1}{section*.2}\protected@file@percent }
+\@writefile{toc}{\tocdepth@restore}
+\citation{cmi}
+\citation{cmi}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{2}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Project scope.}{2}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Context.}{2}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {c}Project Objectives.}{2}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {d}Analytical philosophy.}{2}{section*.7}\protected@file@percent }
+\citation{intro}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Data Description}{3}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Data Source \& Size.}{3}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Feature Groups \& Semantics.}{3}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {c}Target variable.}{3}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {d}Why physical proxies?}{3}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {III}Data Understanding \& Preparation}{3}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Participant profile.}{3}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Data Quality Assessment}{4}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Invalid and extreme values.}{4}{section*.16}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Distributions of the continuous features.}}{4}{figure.caption.17}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:cmi_dists}{{1}{4}{Distributions of the continuous features}{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Box plots of the bio-impedance features (note the extreme outliers).}}{4}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:cmi_bia_box}{{2}{4}{Box plots of the bio-impedance features (note the extreme outliers)}{figure.caption.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Categorical and ordinal feature distributions.}}{4}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:cmi_cat}{{3}{4}{Categorical and ordinal feature distributions}{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Missing values.}{4}{section*.20}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Most affected attributes by missingness (out of $8{,}259$ rows after cleaning).}}{4}{table.caption.21}\protected@file@percent }
+\newlabel{tab:cmi_missing}{{I}{4}{Most affected attributes by missingness (out of $8{,}259$ rows after cleaning)}{table.caption.21}{}}
+\citation{miceforest,vanbuuren}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {c}Categorical semantics.}{5}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}Missing-Value Imputation}{5}{section*.23}\protected@file@percent }
+\newlabel{sec:mice}{{III\,B}{5}{}{section*.23}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Leakage-aware imputation.}{5}{section*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Why MICE rather than simpler imputation.}{5}{section*.25}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Distribution comparison before vs after MICE imputation.}}{5}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:cmi_mice}{{4}{5}{Distribution comparison before vs after MICE imputation}{figure.caption.26}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C}Correlation \& Redundancy Analysis}{5}{section*.27}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Redundancy-driven removal.}{5}{section*.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Association with the target.}{5}{section*.30}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Spearman correlation heatmap of the numeric features (PCIAT excluded).}}{6}{figure.caption.29}\protected@file@percent }
+\newlabel{fig:cmi_heatmap}{{5}{6}{Spearman correlation heatmap of the numeric features (PCIAT excluded)}{figure.caption.29}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Per-feature correlation with the target \texttt  {sii}.}}{6}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:cmi_corr_bar}{{6}{6}{Per-feature correlation with the target \texttt {sii}}{figure.caption.31}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Top features by absolute Pearson correlation with the target \texttt  {sii}.}}{6}{table.caption.32}\protected@file@percent }
+\newlabel{tab:cmi_corr}{{II}{6}{Top features by absolute Pearson correlation with the target \texttt {sii}}{table.caption.32}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {D}Feature Engineering \& Transformation}{6}{section*.33}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Rationale for the composites.}{6}{section*.34}\protected@file@percent }
+\citation{miceforest}
+\citation{pyod}
+\citation{imblearn}
+\citation{sklearn}
+\citation{xgboost}
+\citation{shap}
+\citation{lime}
+\citation{eif}
+\@writefile{toc}{\contentsline {subsection}{\numberline {E}Class Distribution}{7}{section*.35}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Target distribution and its deterministic derivation from the PCIAT total score.}}{7}{figure.caption.36}\protected@file@percent }
+\newlabel{fig:cmi_target}{{7}{7}{Target distribution and its deterministic derivation from the PCIAT total score}{figure.caption.36}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Advanced Data Preprocessing}{7}{section*.37}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Tooling and reproducibility.}{7}{section*.38}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Anomaly Detection}{7}{section*.39}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Setup.}{7}{section*.40}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1}Methods}{7}{section*.41}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Extended Isolation Forest (model-based).}{7}{section*.42}\protected@file@percent }
+\citation{lof}
+\citation{loda}
+\citation{abod}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces EIF outliers vs.\ the rest: features with the largest standardized mean difference.}}{8}{table.caption.43}\protected@file@percent }
+\newlabel{tab:cmi_eif_profile}{{III}{8}{EIF outliers vs.\ the rest: features with the largest standardized mean difference}{table.caption.43}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Local Outlier Factor (density-based).}{8}{section*.44}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {c}LODA (ensemble-based).}{8}{section*.45}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {d}ABOD (angle-based).}{8}{section*.46}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Anomaly detectors: family, key configuration, and number of top-$\approx 1\%$ outliers flagged.}}{8}{table.caption.47}\protected@file@percent }
+\newlabel{tab:cmi_outliers}{{IV}{8}{Anomaly detectors: family, key configuration, and number of top-$\approx 1\%$ outliers flagged}{table.caption.47}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {e}Threshold selection.}{8}{section*.48}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {f}Score behavior.}{8}{section*.49}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Anomaly-score distributions and thresholds for the four detectors.}}{8}{figure.caption.50}\protected@file@percent }
+\newlabel{fig:cmi_outlier_scores}{{8}{8}{Anomaly-score distributions and thresholds for the four detectors}{figure.caption.50}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2}Low-dimensional visualization}{8}{section*.51}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3}Consensus and treatment}{8}{section*.53}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces PCA projection of the four anomaly detectors' outliers (visualization only).}}{9}{figure.caption.52}\protected@file@percent }
+\newlabel{fig:cmi_pca_outliers}{{9}{9}{PCA projection of the four anomaly detectors' outliers (visualization only)}{figure.caption.52}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Pairwise overlap of flagged outliers between detectors (diagonal = total flagged by each method).}}{9}{table.caption.54}\protected@file@percent }
+\newlabel{tab:cmi_overlap}{{V}{9}{Pairwise overlap of flagged outliers between detectors (diagonal = total flagged by each method)}{table.caption.54}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Why remove rather than repair.}{9}{section*.55}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Consensus vote distribution across the four detectors.}}{9}{figure.caption.56}\protected@file@percent }
+\newlabel{fig:cmi_consensus}{{10}{9}{Consensus vote distribution across the four detectors}{figure.caption.56}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Per-method outliers: removed by consensus vs.\ retained.}}{9}{figure.caption.57}\protected@file@percent }
+\newlabel{fig:cmi_removed_kept}{{11}{9}{Per-method outliers: removed by consensus vs.\ retained}{figure.caption.57}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}Imbalanced Learning}{9}{section*.58}\protected@file@percent }
+\citation{imblearn,adasyn}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Setup.}{10}{section*.59}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Resampling techniques.}{10}{section*.60}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Training-set class distribution before and after each resampling strategy.}}{10}{figure.caption.61}\protected@file@percent }
+\newlabel{fig:cmi_resample}{{12}{10}{Training-set class distribution before and after each resampling strategy}{figure.caption.61}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {c}Results and discussion.}{10}{section*.62}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {d}Mechanism behind each result.}{10}{section*.63}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Decision Tree under different resampling strategies (test set; CV F1 is the best cross-validated macro-F1).}}{10}{table.caption.64}\protected@file@percent }
+\newlabel{tab:cmi_imbalance}{{VI}{10}{Decision Tree under different resampling strategies (test set; CV F1 is the best cross-validated macro-F1)}{table.caption.64}{}}
+\citation{sklearn}
+\citation{sklearn}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Best Decision-Tree hyper-parameters per resampling strategy (5-fold CV, macro-F1).}}{11}{table.caption.65}\protected@file@percent }
+\newlabel{tab:cmi_imbalance_params}{{VII}{11}{Best Decision-Tree hyper-parameters per resampling strategy (5-fold CV, macro-F1)}{table.caption.65}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Decision Tree performance across resampling strategies.}}{11}{figure.caption.66}\protected@file@percent }
+\newlabel{fig:cmi_imbalance_perf}{{13}{11}{Decision Tree performance across resampling strategies}{figure.caption.66}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Confusion matrices and one-vs-rest ROC curves across resampling strategies.}}{11}{figure.caption.67}\protected@file@percent }
+\newlabel{fig:cmi_imbalance_cm}{{14}{11}{Confusion matrices and one-vs-rest ROC curves across resampling strategies}{figure.caption.67}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Advanced Classification, Regression, and Explainability}{11}{section*.68}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Classification}{11}{section*.69}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Common protocol.}{11}{section*.70}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1}Logistic Regression}{11}{section*.71}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Model and tuning.}{11}{section*.72}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Results.}{11}{section*.73}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Logistic Regression: coefficient importance, confusion matrix, and ROC curves.}}{11}{figure.caption.74}\protected@file@percent }
+\newlabel{fig:cmi_logreg}{{15}{11}{Logistic Regression: coefficient importance, confusion matrix, and ROC curves}{figure.caption.74}{}}
+\citation{sklearn}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2}Support Vector Machine}{12}{section*.75}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Model and tuning.}{12}{section*.76}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Results.}{12}{section*.77}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces SVM: permutation importance, confusion matrix, and ROC curves.}}{12}{figure.caption.78}\protected@file@percent }
+\newlabel{fig:cmi_svm}{{16}{12}{SVM: permutation importance, confusion matrix, and ROC curves}{figure.caption.78}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3}Neural Network (MLP)}{12}{section*.79}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Model and tuning.}{12}{section*.80}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Convergence and overfitting.}{12}{section*.81}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {c}Results.}{12}{section*.82}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Neural Network: confusion matrix, ROC curves, and permutation importance.}}{12}{figure.caption.83}\protected@file@percent }
+\newlabel{fig:cmi_mlp}{{17}{12}{Neural Network: confusion matrix, ROC curves, and permutation importance}{figure.caption.83}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4}AdaBoost}{12}{section*.84}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Model and tuning.}{12}{section*.85}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Results.}{12}{section*.86}\protected@file@percent }
+\citation{xgboost}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces AdaBoost: feature importance, confusion matrix, and ROC curves.}}{13}{figure.caption.87}\protected@file@percent }
+\newlabel{fig:cmi_ada}{{18}{13}{AdaBoost: feature importance, confusion matrix, and ROC curves}{figure.caption.87}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5}Gradient Boosting (XGBoost)}{13}{section*.88}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Model and tuning.}{13}{section*.89}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Results.}{13}{section*.90}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6}Classification comparison and discussion}{13}{section*.92}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces XGBoost: feature importance, confusion matrix, and ROC curves.}}{13}{figure.caption.91}\protected@file@percent }
+\newlabel{fig:cmi_xgb}{{19}{13}{XGBoost: feature importance, confusion matrix, and ROC curves}{figure.caption.91}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Tuned classifiers on the test set. CV F1 is the best cross-validated macro-F1.}}{13}{table.caption.93}\protected@file@percent }
+\newlabel{tab:cmi_clf}{{VIII}{13}{Tuned classifiers on the test set. CV F1 is the best cross-validated macro-F1}{table.caption.93}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces Per-class F1 on the test set (tuned models). Support: None 1132, Mild 307, Moderate 183, Severe 17.}}{13}{table.caption.94}\protected@file@percent }
+\newlabel{tab:cmi_perclass}{{IX}{13}{Per-class F1 on the test set (tuned models). Support: None 1132, Mild 307, Moderate 183, Severe 17}{table.caption.94}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces Best hyper-parameters selected per classifier (randomized search, 5-fold CV, macro-F1).}}{14}{table.caption.95}\protected@file@percent }
+\newlabel{tab:cmi_clf_params}{{X}{14}{Best hyper-parameters selected per classifier (randomized search, 5-fold CV, macro-F1)}{table.caption.95}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Confusion structure.}{14}{section*.96}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Overall behavior.}{14}{section*.97}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {c}Class-wise pattern.}{14}{section*.98}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {d}Effect of tuning.}{14}{section*.99}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {XI}{\ignorespaces Baseline (untuned) vs.\ tuned test accuracy per classifier.}}{14}{table.caption.100}\protected@file@percent }
+\newlabel{tab:cmi_baseline}{{XI}{14}{Baseline (untuned) vs.\ tuned test accuracy per classifier}{table.caption.100}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}Regression}{14}{section*.101}\protected@file@percent }
+\newlabel{sec:regression}{{V\,B}{14}{}{section*.101}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Setup.}{14}{section*.102}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Distribution of the regression target \texttt  {PCIAT-PCIAT\_Total}.}}{14}{figure.caption.103}\protected@file@percent }
+\newlabel{fig:cmi_reg_target}{{20}{14}{Distribution of the regression target \texttt {PCIAT-PCIAT\_Total}}{figure.caption.103}{}}
+\citation{shap,lime}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Results.}{15}{section*.104}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Regression feature importance: XGBoost gain (left) and MLP permutation (right).}}{15}{figure.caption.105}\protected@file@percent }
+\newlabel{fig:cmi_reg_importance}{{21}{15}{Regression feature importance: XGBoost gain (left) and MLP permutation (right)}{figure.caption.105}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {XII}{\ignorespaces Non-linear regressors predicting \texttt  {PCIAT-PCIAT\_Total} (test set), baseline vs tuned.}}{15}{table.caption.106}\protected@file@percent }
+\newlabel{tab:cmi_reg}{{XII}{15}{Non-linear regressors predicting \texttt {PCIAT-PCIAT\_Total} (test set), baseline vs tuned}{table.caption.106}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Regression diagnostics: predicted-vs-actual and residual plots.}}{15}{figure.caption.107}\protected@file@percent }
+\newlabel{fig:cmi_reg_diag}{{22}{15}{Regression diagnostics: predicted-vs-actual and residual plots}{figure.caption.107}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces Absolute-error distribution for the two regressors.}}{15}{figure.caption.108}\protected@file@percent }
+\newlabel{fig:cmi_abserr}{{23}{15}{Absolute-error distribution for the two regressors}{figure.caption.108}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C}Explainability (XAI)}{15}{section*.109}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}SHAP (XGBoost).}{15}{section*.110}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}LIME (MLP).}{16}{section*.111}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {c}Permutation importance.}{16}{section*.112}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces SHAP global importance and beeswarm summary for the XGBoost classifier.}}{16}{figure.caption.113}\protected@file@percent }
+\newlabel{fig:cmi_shap}{{24}{16}{SHAP global importance and beeswarm summary for the XGBoost classifier}{figure.caption.113}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {d}Why three explainers.}{16}{section*.115}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces LIME local explanation and predicted class probabilities for a misclassified severe case.}}{16}{figure.caption.114}\protected@file@percent }
+\newlabel{fig:cmi_lime}{{25}{16}{LIME local explanation and predicted class probabilities for a misclassified severe case}{figure.caption.114}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {D}Combining Techniques: XGBoost with ADASYN}{16}{section*.116}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Protocol.}{16}{section*.117}\protected@file@percent }
+\citation{cmi}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Results.}{17}{section*.118}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {XIII}{\ignorespaces XGBoost with algorithm-level (B, balanced weights) vs.\ data-level (C, ADASYN) imbalance handling, leakage-free protocol (test set).}}{17}{table.caption.119}\protected@file@percent }
+\newlabel{tab:cmi_adasyn}{{XIII}{17}{XGBoost with algorithm-level (B, balanced weights) vs.\ data-level (C, ADASYN) imbalance handling, leakage-free protocol (test set)}{table.caption.119}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces XGBoost weighted (B) vs.\ ADASYN (C): confusion matrices and grouped metric comparison.}}{17}{figure.caption.120}\protected@file@percent }
+\newlabel{fig:cmi_adasyn}{{26}{17}{XGBoost weighted (B) vs.\ ADASYN (C): confusion matrices and grouped metric comparison}{figure.caption.120}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {c}Takeaway.}{17}{section*.121}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Time Series Data and Preprocessing}{17}{section*.122}\protected@file@percent }
+\newlabel{sec:ts_prep}{{VI}{17}{}{section*.122}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Dataset Description}{17}{section*.123}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}One series is one subject-day.}{17}{section*.124}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}Missing Values and Column Selection}{17}{section*.125}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C}Non-wear Filtering}{18}{section*.126}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {D}Physically-Impossible Spike Removal}{18}{section*.127}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Why not a Hampel filter.}{18}{section*.128}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}A magnitude-and-isolation rule.}{18}{section*.129}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces Physically-impossible \texttt  {enmo} spikes (removed) versus genuine sustained activity (retained).}}{18}{figure.caption.130}\protected@file@percent }
+\newlabel{fig:ts_spikes}{{27}{18}{Physically-impossible \texttt {enmo} spikes (removed) versus genuine sustained activity (retained)}{figure.caption.130}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {E}Cleaned Dataset}{18}{section*.131}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {XIV}{\ignorespaces Time-series cleaning funnel (series dropped only for non-wear or saturation artifacts).}}{18}{table.caption.132}\protected@file@percent }
+\newlabel{tab:ts_funnel}{{XIV}{18}{Time-series cleaning funnel (series dropped only for non-wear or saturation artifacts)}{table.caption.132}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Time Series Classification}{18}{section*.133}\protected@file@percent }
+\newlabel{sec:ts}{{VII}{18}{}{section*.133}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}The Grouping Problem and the Protocol}{19}{section*.134}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Methodological response.}{19}{section*.135}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces Time-series dataset: class balance, the per-subject day distribution that forces grouped evaluation, and example series.}}{19}{figure.caption.136}\protected@file@percent }
+\newlabel{fig:ts_data}{{28}{19}{Time-series dataset: class balance, the per-subject day distribution that forces grouped evaluation, and example series}{figure.caption.136}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Common protocol.}{19}{section*.137}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}$k$-Nearest Neighbours: Euclidean, Manhattan, DTW}{19}{section*.138}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Model and tuning.}{19}{section*.139}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Results.}{19}{section*.140}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {29}{\ignorespaces Effect of the DTW warping-band width on subject-level F1.}}{20}{figure.caption.141}\protected@file@percent }
+\newlabel{fig:ts_dtw}{{29}{20}{Effect of the DTW warping-band width on subject-level F1}{figure.caption.141}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C}Shapelets: Retrieval, Analysis, and a Subject-Fingerprint Warning}{20}{section*.142}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Model and tuning.}{20}{section*.143}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Results and what the shapes reveal.}{20}{section*.144}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {30}{\ignorespaces Retrieved shapelets and the subject-fingerprint diagnosis.}}{20}{figure.caption.145}\protected@file@percent }
+\newlabel{fig:ts_shapelets}{{30}{20}{Retrieved shapelets and the subject-fingerprint diagnosis}{figure.caption.145}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {D}MiniRocket (Kernel/Convolution) and a Channel Ablation}{20}{section*.146}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Model and tuning.}{20}{section*.147}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Results.}{20}{section*.148}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {E}MUSE (Dictionary-Based)}{21}{section*.149}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Model and tuning.}{21}{section*.150}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Results.}{21}{section*.151}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {F}Comparison and Discussion}{21}{section*.152}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {XV}{\ignorespaces Time-series classifiers on the day-capped set, subject-grouped nested CV. Subject-level metrics are the headline (mean over 5 outer folds); CV F1 is the mean inner macro-F1 of the selected models.}}{21}{table.caption.153}\protected@file@percent }
+\newlabel{tab:ts_clf}{{XV}{21}{Time-series classifiers on the day-capped set, subject-grouped nested CV. Subject-level metrics are the headline (mean over 5 outer folds); CV F1 is the mean inner macro-F1 of the selected models}{table.caption.153}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {XVI}{\ignorespaces Best configuration per method (subject-grouped CV).}}{21}{table.caption.154}\protected@file@percent }
+\newlabel{tab:ts_params}{{XVI}{21}{Best configuration per method (subject-grouped CV)}{table.caption.154}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Ordering and headline metric.}{21}{section*.158}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {31}{\ignorespaces Subject-level performance across methods (mean $\pm $ std over folds).}}{21}{figure.caption.155}\protected@file@percent }
+\newlabel{fig:ts_compare}{{31}{21}{Subject-level performance across methods (mean $\pm $ std over folds)}{figure.caption.155}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {32}{\ignorespaces Subject-level ROC and precision--recall curves.}}{21}{figure.caption.156}\protected@file@percent }
+\newlabel{fig:ts_roc}{{32}{21}{Subject-level ROC and precision--recall curves}{figure.caption.156}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}The leakage gap.}{21}{section*.159}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {33}{\ignorespaces Subject-level confusion matrices (pooled out-of-fold).}}{22}{figure.caption.157}\protected@file@percent }
+\newlabel{fig:ts_cm}{{33}{22}{Subject-level confusion matrices (pooled out-of-fold)}{figure.caption.157}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {c}Interpretability hook (XAI).}{22}{section*.160}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {d}Overall.}{22}{section*.161}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{22}{section*.162}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {a}Time-series classification.}{22}{section*.163}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {b}Limitations and future work.}{22}{section*.164}\protected@file@percent }
+\bibdata{report_dm2Notes,references}
+\bibcite{cmi}{{1}{2024}{{{Child Mind Institute}}}{{}}}
+\bibcite{intro}{{2}{2018}{{Tan\ \emph  {et~al.}}}{{Tan, Steinbach, Karpatne,\ and\ Kumar}}}
+\bibcite{miceforest}{{3}{2022}{{Wilson}}{{}}}
+\bibcite{vanbuuren}{{4}{2011}{{van Buuren\ and\ Groothuis-Oudshoorn}}{{}}}
+\bibcite{pyod}{{5}{2019}{{Zhao\ \emph  {et~al.}}}{{Zhao, Nasrullah,\ and\ Li}}}
+\bibcite{imblearn}{{6}{2017}{{Lema{\^i}tre\ \emph  {et~al.}}}{{Lema{\^i}tre, Nogueira,\ and\ Aridas}}}
+\bibcite{sklearn}{{7}{2011}{{Pedregosa\ \emph  {et~al.}}}{{Pedregosa \emph  {et~al.}}}}
+\bibcite{xgboost}{{8}{2016}{{Chen\ and\ Guestrin}}{{}}}
+\bibcite{shap}{{9}{2017}{{Lundberg\ and\ Lee}}{{}}}
+\bibcite{lime}{{10}{2016}{{Ribeiro\ \emph  {et~al.}}}{{Ribeiro, Singh,\ and\ Guestrin}}}
+\bibcite{eif}{{11}{2021}{{Hariri\ \emph  {et~al.}}}{{Hariri, Kind,\ and\ Brunner}}}
+\bibcite{lof}{{12}{2000}{{Breunig\ \emph  {et~al.}}}{{Breunig, Kriegel, Ng,\ and\ Sander}}}
+\bibcite{loda}{{13}{2016}{{Pevn{\'y}}}{{}}}
+\bibcite{abod}{{14}{2008}{{Kriegel\ \emph  {et~al.}}}{{Kriegel, Schubert,\ and\ Zimek}}}
+\bibcite{adasyn}{{15}{2008}{{He\ \emph  {et~al.}}}{{He, Bai, Garcia,\ and\ Li}}}
+\bibstyle{apsrev4-1}
+\@writefile{toc}{\contentsline {section}{\numberline {}References}{23}{section*.165}\protected@file@percent }
+\newlabel{LastBibItem}{{15}{23}{}{section*.165}{}}
+\newlabel{LastPage}{{}{23}{}{}{}}
+\gdef \@abspage@last{23}
