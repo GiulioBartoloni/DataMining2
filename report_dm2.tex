@@ -1,0 +1,889 @@
+\begin{filecontents*}{references.bib}
+@misc{cmi,
+  author = {{Child Mind Institute}},
+  title  = {Child Mind Institute --- Problematic Internet Use},
+  year   = {2024},
+  howpublished = {Kaggle competition},
+  note   = {\url{https://www.kaggle.com/competitions/child-mind-institute-problematic-internet-use/data}}
+}
+@article{sklearn,
+  author  = {Pedregosa, F. and others},
+  title   = {Scikit-learn: Machine Learning in {P}ython},
+  journal = {Journal of Machine Learning Research},
+  volume  = {12},
+  pages   = {2825--2830},
+  year    = {2011}
+}
+@article{imblearn,
+  author  = {Lema{\^i}tre, G. and Nogueira, F. and Aridas, C. K.},
+  title   = {Imbalanced-learn: A Python Toolbox to Tackle the Curse of Imbalanced Datasets in Machine Learning},
+  journal = {Journal of Machine Learning Research},
+  volume  = {18},
+  number  = {17},
+  pages   = {1--5},
+  year    = {2017}
+}
+@misc{miceforest,
+  author = {Wilson, Samuel},
+  title  = {miceforest: Fast, Memory Efficient Imputation with LightGBM},
+  year   = {2022},
+  note   = {\url{https://github.com/AnotherSamWilson/miceforest}}
+}
+@inproceedings{vanbuuren,
+  author = {van Buuren, S. and Groothuis-Oudshoorn, K.},
+  title  = {mice: Multivariate Imputation by Chained Equations in {R}},
+  journal= {Journal of Statistical Software},
+  volume = {45},
+  number = {3},
+  pages  = {1--67},
+  year   = {2011}
+}
+@inproceedings{abod,
+  author = {Kriegel, H.-P. and Schubert, M. and Zimek, A.},
+  title  = {Angle-based outlier detection in high-dimensional data},
+  booktitle = {Proc. ACM SIGKDD},
+  pages  = {444--452},
+  year   = {2008}
+}
+@inproceedings{lof,
+  author = {Breunig, M. M. and Kriegel, H.-P. and Ng, R. T. and Sander, J.},
+  title  = {{LOF}: Identifying Density-Based Local Outliers},
+  booktitle = {Proc. ACM SIGMOD},
+  pages  = {93--104},
+  year   = {2000}
+}
+@article{loda,
+  author = {Pevn{\'y}, Tom{\'a}{\v{s}}},
+  title  = {Loda: Lightweight on-line detector of anomalies},
+  journal= {Machine Learning},
+  volume = {102},
+  number = {2},
+  pages  = {275--304},
+  year   = {2016}
+}
+@inproceedings{eif,
+  author = {Hariri, S. and Kind, M. C. and Brunner, R. J.},
+  title  = {Extended Isolation Forest},
+  journal= {IEEE Transactions on Knowledge and Data Engineering},
+  volume = {33},
+  number = {4},
+  pages  = {1479--1489},
+  year   = {2021}
+}
+@article{pyod,
+  author = {Zhao, Y. and Nasrullah, Z. and Li, Z.},
+  title  = {{PyOD}: A Python Toolbox for Scalable Outlier Detection},
+  journal= {Journal of Machine Learning Research},
+  volume = {20},
+  number = {96},
+  pages  = {1--7},
+  year   = {2019}
+}
+@inproceedings{adasyn,
+  author = {He, H. and Bai, Y. and Garcia, E. A. and Li, S.},
+  title  = {{ADASYN}: Adaptive synthetic sampling approach for imbalanced learning},
+  booktitle = {IEEE IJCNN},
+  pages  = {1322--1328},
+  year   = {2008}
+}
+@inproceedings{xgboost,
+  author = {Chen, T. and Guestrin, C.},
+  title  = {{XGBoost}: A Scalable Tree Boosting System},
+  booktitle = {Proc. ACM SIGKDD},
+  pages  = {785--794},
+  year   = {2016}
+}
+@inproceedings{shap,
+  author = {Lundberg, S. M. and Lee, S.-I.},
+  title  = {A Unified Approach to Interpreting Model Predictions},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  pages  = {4765--4774},
+  year   = {2017}
+}
+@inproceedings{lime,
+  author = {Ribeiro, M. T. and Singh, S. and Guestrin, C.},
+  title  = {``Why Should I Trust You?'': Explaining the Predictions of Any Classifier},
+  booktitle = {Proc. ACM SIGKDD},
+  pages  = {1135--1144},
+  year   = {2016}
+}
+@book{intro,
+  author    = {Tan, P.-N. and Steinbach, M. and Karpatne, A. and Kumar, V.},
+  title     = {Introduction to Data Mining},
+  publisher = {Pearson},
+  edition   = {2nd},
+  year      = {2018}
+}
+\end{filecontents*}
+
+\documentclass[twocolumn]{revtex4-1}
+
+\usepackage{titletoc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{graphicx} % needed for figures
+\usepackage{pgfgantt}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+\usepackage{url}
+\usepackage{float}
+
+
+\titlecontents{section}
+  [0em]                                   % left margin
+  {\vspace{0pt}\bfseries}                 % text format
+  {\contentslabel{2.2em}}                 % label format
+  {}                                      % (no label)
+  {\hfill\contentspage}                   % page number format
+  [\vspace{1pt}]                          % after-code
+
+% Subsections (A, B, C...)
+\titlecontents{subsection}
+  [1.6em]
+  {\vspace{1pt}\small\bfseries}
+  {\contentslabel{2.0em}}
+  {}
+  {\hfill\contentspage}
+  [\vspace{0pt}]
+
+\titlecontents{subsubsection}
+  [3.6em]
+  {\vspace{0pt}\footnotesize}
+  {\contentslabel{2.4em}}
+  {}
+  {\hfill\contentspage}
+  [\vspace{0pt}]
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+% Image-placeholder helper (no final figures available yet)
+\newcommand{\imgph}[1]{%
+  \fbox{\parbox[c][5.4cm][c]{0.92\linewidth}{\centering\footnotesize\ttfamily [IMAGE PLACEHOLDER:\\[2pt] #1]}}%
+}
+
+\begin{document}
+
+\title{Data Mining 2 \\ Child Mind Institute --- Predicting Problematic Internet Use in Children and Adolescents: Advanced Preprocessing, Machine Learning, and Explainability}
+
+\author{Bachana Basilaia}
+\email{b.basilaia@studenti.unipi.it}
+\thanks{Matricola: 634448}
+\author{Giulio Bartoloni}
+\email{g.bartoloni1@studenti.unipi.it}
+\thanks{Matricola: 654370}
+\author{Ilaria De Martino}
+\email{i.demartino@studenti.unipi.it}
+\thanks{Matricola: \texttt{[TODO]}}
+
+\affiliation{Universit\`a di Pisa, Dipartimento di Informatica}
+\date{\today}
+
+\maketitle
+
+\onecolumngrid
+\tableofcontents
+\clearpage
+\twocolumngrid
+
+
+\section{Introduction}
+
+This project presents a detailed advanced data mining and machine learning analysis of the \emph{Child Mind Institute (CMI) --- Problematic Internet Use} dataset \cite{cmi}. The central question motivating the original competition is whether the level of problematic internet usage exhibited by children and adolescents can be predicted from physical activity, fitness, and body-composition measurements. Identifying such patterns early can help trigger interventions that encourage healthier digital habits.\\
+
+\paragraph{Project scope.} The CMI project is built around two complementary data modalities that are analyzed independently and reported in two parts: (i) a \textbf{tabular dataset} of demographic, physical, fitness, and bio-impedance measurements, and (ii) a \textbf{time-series dataset} of wrist-worn accelerometer recordings. This report documents the \textbf{tabular dataset}, which spans the project's first three modules: Module~0 (Data Understanding \& Preparation), Module~1 (Advanced Data Preprocessing --- anomaly detection, dimensionality reduction, and imbalanced learning), and Module~2 (Advanced Classification, Regression, and Explainability). The time-series analysis (Module~3) is treated separately in the companion part of the project and is therefore out of scope here.\\
+
+\paragraph{Context.} The dataset used here is a modified version of the original CMI release: some original missing values were altered and synthetic samples were added. This makes the data both noisy and partly artificial, which is realistic for a community-collected clinical-style dataset and provides an excellent testbed for the advanced preprocessing techniques required by the course.\\
+
+From a data mining perspective the dataset poses several challenges. First, \emph{pervasive missingness}: many physiological instruments were administered to only a subset of participants, so a large fraction of fields is missing and the target itself is observed for only about one third of records. Second, \emph{heavy class imbalance}: the prediction target is a four-level ordinal severity index dominated by the ``None'' class. Third, \emph{redundancy and noise}: the bio-impedance panel contains many strongly collinear body-composition variables, alongside physically implausible values introduced by the synthetic-sample generation.\\
+
+\paragraph{Project Objectives.} The main objectives addressed in this report are:
+
+\begin{itemize}
+    \item \textbf{Data understanding and preparation:} analyze feature distributions, correct invalid values, impute missing data with a model-based strategy, engineer composite features, and reduce redundancy, while strictly avoiding target leakage.
+    \item \textbf{Anomaly detection:} identify the top $\approx 1\%$ outliers using methods from different families and combine them into a consensus before deciding how to treat them.
+    \item \textbf{Imbalanced learning:} define a classification task on the imbalanced target and study the effect of undersampling and oversampling techniques.
+    \item \textbf{Advanced classification:} predict the Severity Impairment Index (\texttt{sii}) with Logistic Regression, Support Vector Machines, Neural Networks, AdaBoost, and Gradient Boosting, with full hyper-parameter tuning.
+    \item \textbf{Advanced regression:} model the continuous internet-use score with two non-linear regressors.
+    \item \textbf{Explainability (XAI):} interpret the models with SHAP, LIME, and permutation importance.
+\end{itemize}
+
+Together these tasks move from descriptive data understanding to predictive modeling and finally to interpretation, giving a comprehensive view of how physical and behavioral characteristics relate to problematic internet use.\\
+
+\paragraph{Analytical philosophy.} A recurring theme throughout this report is the tension between two notions of success on a heavily imbalanced clinical-style dataset: raw predictive accuracy on the one hand, and balanced, clinically actionable detection of the rare but important high-severity cases on the other. Because a trivial classifier that always predicts the majority \texttt{None} class already reaches roughly $69\%$ accuracy, accuracy alone is a misleading headline. We therefore adopt macro-averaged metrics as the primary evaluation criterion, use balanced sample weights and resampling to counteract the skew, and consistently report both the optimistic (accuracy) and the demanding (macro-F1, minority recall) views so that the genuine difficulty of the problem is never hidden behind a single favorable number. Equally important is methodological hygiene: because the target is a deterministic function of the PCIAT score, every stage of the pipeline is engineered to prevent that information from leaking into the predictors, even indirectly through the imputation model.
+
+\section{Data Description}
+
+The tabular dataset is a modified version of the data released by the Child Mind Institute \cite{cmi}. Each row corresponds to one child or adolescent, described by demographic, clinical, physical, fitness, body-composition, and behavioral attributes collected through a battery of standardized instruments.\\
+
+\paragraph{Data Source \& Size.} The raw file contains $8{,}460$ participants and $82$ variables. After the data understanding and preparation phase the dataset is transformed into a cleaned and modeling-ready version that retains only the variables required for analysis while addressing invalid values, missing data, and redundancy. The cleaned dataset (\texttt{cmi\_preprocessed.csv}, $8{,}259 \times 20$) is the common input for anomaly detection, and its outlier-cleaned descendant (\texttt{cmi\_consensus\_clean.csv}, $8{,}193 \times 20$) is the input for classification and regression.\\
+
+\paragraph{Feature Groups \& Semantics.} The variables are organized into semantic groups that reflect the instrument they come from:
+
+\begin{itemize}
+    \item \textbf{Identification:} the participant identifier \texttt{id}, used only for reference.
+    \item \textbf{Demographics:} \texttt{Basic\_Demos-Age} and \texttt{Basic\_Demos-Sex}.
+    \item \textbf{Clinical assessment:} the Children's Global Assessment Scale (\texttt{CGAS-CGAS\_Score}), a clinician-rated measure of global functioning.
+    \item \textbf{Physical measures:} height, weight, heart rate, and blood pressure.
+    \item \textbf{Fitness (FitnessGram):} curl-ups, push-ups, grip strength, sit-and-reach, and trunk-lift, each with a binary ``healthy fitness zone'' flag.
+    \item \textbf{Bio-impedance (BIA):} a large panel of body-composition estimates (BMI, fat-free mass, fat-mass indices, daily energy expenditure, body frame, activity level, etc.), which are strongly intercorrelated.
+    \item \textbf{Behavioral:} the Physical Activity Questionnaire scores (\texttt{PAQ\_A}/\texttt{PAQ\_C}) and self-reported daily internet/computer hours (\texttt{PreInt\_EduHx-computerinternet\_hoursday}).
+    \item \textbf{Internet-use severity:} the Parent-Child Internet Addiction Test total score (\texttt{PCIAT-PCIAT\_Total}) and the derived target \texttt{sii}.
+\end{itemize}
+
+\paragraph{Target variable.} The Severity Impairment Index \texttt{sii} is an ordinal variable with four levels: \texttt{None}(0), \texttt{Mild}(1), \texttt{Moderate}(2), and \texttt{Severe}(3). It is a deterministic thresholding of \texttt{PCIAT-PCIAT\_Total} at the cut-points $30$, $49$, and $79$. This relationship, confirmed empirically in Module~0, has a crucial methodological consequence: the PCIAT items and total are a direct source of the label and must be excluded from any classification feature set to avoid leakage. They are retained only as the target of the regression task.\\
+
+\paragraph{Why physical proxies?} The competition's premise is that problematic internet use leaves measurable traces in a child's physical and behavioral profile: a sedentary lifestyle dominated by screen time may co-occur with altered body composition, reduced fitness, and disturbed daily-activity patterns. The tabular instruments collected here are precisely such proxies. Whether this premise holds --- whether bio-impedance and fitness measurements actually carry a usable signal about internet-use severity --- is itself one of the empirical questions this report answers, and the modest correlations and predictive ceilings reported later provide a quantitative response.\\
+
+Overall, the dataset combines heterogeneous instruments, pervasive missingness, redundant body-composition panels, and a heavily imbalanced ordinal target, making it well suited for demonstrating advanced preprocessing and modeling techniques.
+
+\section{Data Understanding \& Preparation}
+Following standard data mining practice, we separate \emph{data understanding} (distributions, quality issues, dependencies) from \emph{data preparation} (cleaning, imputation, feature engineering, selection) \cite{intro}. The raw dataset has $8{,}460$ participants and $82$ attributes. After cleaning and feature selection the modeling-ready dataset has $8{,}259$ participants and $20$ modeling columns (plus the \texttt{id} index), a $2.4\%$ row reduction concentrated on physically impossible records.\\
+
+We begin with descriptive statistics, distribution plots, and a correlation analysis to characterize a typical participant, expose data-quality problems, and surface redundant variables. The findings then guide the preparation choices described below.\\
+
+\paragraph{Participant profile.} The cohort consists of children and adolescents: after metric conversion, height averages $145$\,cm and weight $38$\,kg, consistent with the age range of the sample. Continuous physiological variables (heart rate, blood pressure, and especially the bio-impedance panel) display long right tails and physically impossible extremes --- for instance, a converted minimum weight far below any plausible value --- which is precisely the synthetic noise the preparation pipeline is designed to absorb. Categorical and ordinal fields (sex, the fitness-zone flags, body frame, activity level, and the internet-hours band) take only their nominal code sets, confirming that the imputation preserved valid categories. These observations motivated two complementary choices: a robust, model-based imputation that does not assume Gaussianity, and a deferral of extreme-value treatment to the dedicated anomaly-detection module rather than aggressive trimming during cleaning.
+
+\subsection{Data Quality Assessment}
+Data quality problems in this dataset arise mainly from invalid/implausible values, very high missingness, and redundant body-composition panels.
+
+\paragraph{Invalid and extreme values.} Several attributes contained values that are syntactically valid but physiologically impossible, introduced by the dataset's synthetic perturbation. We applied conservative correction rules, preferring to flag values as missing (for later imputation) over discarding rows:
+\begin{itemize}
+    \item \textbf{CGAS score:} rows with \texttt{CGAS-CGAS\_Score}$>100$ were removed, since the scale is bounded at $100$.
+    \item \textbf{Weight / blood pressure:} \texttt{Physical-Weight}, \texttt{Physical-Systolic\_BP}, and \texttt{Physical-Diastolic\_BP} equal to $0$ were set to \texttt{NaN} (a zero is biologically impossible and indicates a missing reading).
+    \item \textbf{Body composition:} rows with a negative fat-mass index (\texttt{BIA-BIA\_FMI}$<0$) or a body-fat percentage outside $[0,100]$ were removed as clear errors.
+\end{itemize}
+These rules removed $201$ rows ($\approx 2\%$), preserving the vast majority of the data while eliminating impossible records. The continuous-feature histograms (Figure~\ref{fig:cmi_dists}) and the bio-impedance box plots (Figure~\ref{fig:cmi_bia_box}) make both the skew and the extreme tails visually apparent.\\
+
+\begin{figure}[h]
+    \centering
+    \imgph{Grid of histograms (4 columns) of the $\sim$37 continuous features, exposing skew, multimodality, and implausible spikes at zero}
+    \caption{Distributions of the continuous features.}
+    \label{fig:cmi_dists}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \imgph{3$\times$6 grid of box plots for the bio-impedance (BIA) panel, highlighting the extreme outliers and heavy tails that motivate later anomaly detection}
+    \caption{Box plots of the bio-impedance features (note the extreme outliers).}
+    \label{fig:cmi_bia_box}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \imgph{3$\times$4 grid of bar charts for the categorical/ordinal features: sex, the seven FitnessGram zone flags, BIA activity level, BIA body frame, and the internet-hours band}
+    \caption{Categorical and ordinal feature distributions.}
+    \label{fig:cmi_cat}
+\end{figure}
+
+\paragraph{Missing values.} Missingness is severe and structured by instrument. The 20 PCIAT item columns and the total are missing for $5{,}746$ participants ($67.9\%$); among the retained predictors, \texttt{Physical-Weight} ($9.7\%$), \texttt{PreInt\_EduHx-computerinternet\_hoursday} ($7.2\%$), and several FitnessGram and BIA fields show substantial missingness. Rather than dropping rows or columns wholesale, we used a model-based multiple-imputation strategy (Section~\ref{sec:mice}). Table~\ref{tab:cmi_missing} summarizes the most affected fields.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Most affected attributes by missingness (out of $8{,}259$ rows after cleaning).}
+\label{tab:cmi_missing}
+\begin{tabular}{l r r}
+\hline
+Attribute & Missing & \% \\
+\hline
+PCIAT items / total      & 5{,}746 & 67.9 \\
+Physical-Weight          & 819 & 9.7 \\
+computerinternet\_hoursday & 611 & 7.2 \\
+Physical (season)        & 602 & 7.1 \\
+FGC (season)             & 569 & 6.7 \\
+PreInt\_EduHx (season)   & 389 & 4.6 \\
+\hline
+\end{tabular}
+\end{table}
+
+The PCIAT block is the most affected because the parent-child questionnaire was administered to only about one third of participants; this directly determines that the regression task (Section~\ref{sec:regression}) trains partly on imputed targets and that the classification target is observed on a minority of records before imputation.
+
+\paragraph{Categorical semantics.} Eleven ``Season'' columns (one per instrument) record only the season of administration and carry no predictive value for internet-use severity; they were removed. The 20 individual PCIAT items were dropped while keeping only \texttt{PCIAT-PCIAT\_Total} (reserved for regression), consistent with the leakage argument above.
+
+\subsection{Missing-Value Imputation}
+\label{sec:mice}
+Missing values were imputed with \textbf{multiple imputation by chained equations} using the \texttt{miceforest} implementation, which fits gradient-boosted trees as the conditional model for each variable \cite{miceforest,vanbuuren}. Compared to mean/median substitution, this approach preserves multivariate relationships and is robust to the mixed continuous/categorical nature of the data.\\
+
+The configuration generated \texttt{NUM\_DATASETS}$=3$ imputed copies with $5$ MICE iterations each (\texttt{random\_state}$=42$, \texttt{mean\_match\_candidates}$=5$). Categorical columns (sex, fitness zones, body-frame, activity level, internet-hours band) were cast to a categorical dtype and imputed with a SHAP-based mean-matching strategy so that imputed codes remain valid categories.\\
+
+\paragraph{Leakage-aware imputation.} A key design decision was the \texttt{variable\_schema}: \texttt{PCIAT-PCIAT\_Total} is imputed using all other variables as predictors, but it is itself \emph{excluded as a predictor for every other variable}. This prevents PCIAT-derived information --- which deterministically defines the label --- from leaking into the features later consumed by anomaly detection, classification, and the imbalanced-learning task.\\
+
+\paragraph{Why MICE rather than simpler imputation.} Single-value substitution (mean or median) would have been disastrous here for two reasons. First, the missingness is far from random: entire instruments are absent for some participants, so the conditional distribution of a missing field depends strongly on which other fields are present --- exactly the regime in which chained-equations imputation, which models each variable on all the others, outperforms marginal substitution. Second, mean substitution artificially shrinks variance and inflates the spurious peak at the mean, which would have corrupted both the correlation analysis and the distance-based anomaly detectors downstream. Generating three imputed copies and pooling them additionally provides a crude but useful measure of imputation stability and damps the variance introduced by any single stochastic imputation draw.\\
+
+The three imputed datasets were pooled by averaging continuous columns and taking the per-row majority vote for categorical columns. After imputation, the $14$ body-composition and depression-scale columns that were deliberately excluded from imputation (because they were both highly collinear and heavily missing, e.g.\ \texttt{BIA-BIA\_BMC/BMR/TBW/ECW/ICW/SMM/LDM/LST} and the \texttt{SDS} totals) were dropped, leaving a fully observed table. A post-imputation step restored each column to the decimal granularity observed in the raw data, since pooling otherwise introduces spurious precision.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Overlaid density histograms (before vs after MICE) for every retained column, confirming the imputation preserves the marginal distributions}
+    \caption{Distribution comparison before vs after MICE imputation.}
+    \label{fig:cmi_mice}
+\end{figure}
+
+\subsection{Correlation \& Redundancy Analysis}
+The bio-impedance panel contains many variables that are different transformations of the same body-composition measurements and are therefore highly collinear. We computed a Spearman correlation heatmap over all non-PCIAT numeric features and the per-feature correlation with the target.\\
+
+\paragraph{Redundancy-driven removal.} \texttt{Physical-BMI} was removed as redundant with \texttt{BIA-BIA\_BMI}, and the collinear extended-BIA panel listed above was dropped. This keeps a compact set of body-composition descriptors (\texttt{BIA-BIA\_BMI}, \texttt{BIA-BIA\_FFM}, \texttt{BIA-BIA\_FFMI}, \texttt{BIA-BIA\_FMI}, \texttt{BIA-BIA\_DEE}, \texttt{BIA-BIA\_Activity\_Level\_num}, \texttt{BIA-BIA\_Frame\_num}) without over-representing one signal.\\
+
+\begin{figure}[h]
+    \centering
+    \imgph{Lower-triangular Spearman correlation heatmap over all non-PCIAT numeric features, highlighting the densely intercorrelated bio-impedance block}
+    \caption{Spearman correlation heatmap of the numeric features (PCIAT excluded).}
+    \label{fig:cmi_heatmap}
+\end{figure}
+
+\paragraph{Association with the target.} The features most correlated with \texttt{sii} (Table~\ref{tab:cmi_corr}, Figure~\ref{fig:cmi_heatmap}) are dominated by age- and size-related variables together with self-reported internet hours, foreshadowing the feature importances recovered later by the supervised models. All linear correlations are modest ($|r|\lesssim 0.24$), indicating that no single physical measurement determines severity and that non-linear, multivariate models will be required.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Horizontal bar chart of the signed correlation of every non-PCIAT feature with \texttt{sii} (positive in steel-blue, negative in salmon), sorted by magnitude}
+    \caption{Per-feature correlation with the target \texttt{sii}.}
+    \label{fig:cmi_corr_bar}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Top features by absolute Pearson correlation with the target \texttt{sii}.}
+\label{tab:cmi_corr}
+\begin{tabular}{l r}
+\hline
+Feature & $|r|$ with \texttt{sii} \\
+\hline
+Physical-Height & 0.236 \\
+computerinternet\_hoursday & 0.218 \\
+Physical-Weight & 0.216 \\
+SDS-SDS\_Total\_T & 0.214 \\
+Basic\_Demos-Age & 0.211 \\
+FGC-FGC\_CU (curl-ups) & 0.198 \\
+BIA-BIA\_BMI & 0.152 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Feature Engineering \& Transformation}
+After cleaning, several composite features were derived to reduce dimensionality and improve semantic interpretability:
+\begin{itemize}
+    \item \textbf{Unit conversion:} \texttt{Physical-Height} was converted from inches to centimetres ($\times 2.54$) and \texttt{Physical-Weight} from pounds to kilograms ($\times 0.453592$) for interpretable metric units.
+    \item \textbf{Mean arterial pressure:} the two blood-pressure readings were merged into
+    \[
+    \texttt{MAP} = \frac{\texttt{Systolic} + 2\,\texttt{Diastolic}}{3},
+    \]
+    a single clinically meaningful variable, after which the raw readings were dropped.
+    \item \textbf{Fat mass:} \texttt{BIA-FM} $= \texttt{Weight}\times(\texttt{BIA-BIA\_Fat}/100)$ replaces the body-fat percentage.
+    \item \textbf{Fitness score:} \texttt{FGC-Fitness\_score} $\in\{0,\dots,7\}$ is the sum of the seven binary FitnessGram ``healthy-zone'' flags, summarizing the fitness panel in one ordinal score; the seven raw measurements and seven zone flags were then dropped. Grip-strength zones were first binarized (\{1$\to$0, 2$\to$1, 3$\to$1\}).
+    \item \textbf{Combined activity:} \texttt{PAQ\_Combined} averages the adolescent and child Physical Activity Questionnaire totals (or takes whichever is available).
+\end{itemize}
+\paragraph{Rationale for the composites.} Each engineered feature replaces a cluster of redundant or hard-to-interpret raw columns with a single variable that is both more compact and more meaningful. Mean arterial pressure is the physiologically correct way to summarize the two blood-pressure readings into the quantity clinicians actually reason about, and it removes the strong collinearity between systolic and diastolic values. The fitness score converts seven weakly populated, individually noisy zone flags into one ordinal ``how many fitness benchmarks were met'' index that is far more robust to a single missing test. Fat mass derived from weight and body-fat percentage is more directly comparable across body sizes than a raw percentage. Collapsing the two questionnaire variants into \texttt{PAQ\_Combined} recovers a usable activity signal for participants who completed only one form. The net effect is a reduction from $82$ raw columns to $18$ informative predictors with little loss of signal.\\
+
+Feature scaling was deliberately \emph{not} baked into the prepared dataset: standardization is applied only at the modeling stage for distance- and gradient-based algorithms, so that preprocessing does not leak model-specific assumptions and each algorithm operates on the representation it requires.
+
+\subsection{Class Distribution}
+The target is strongly imbalanced (Figure~\ref{fig:cmi_target}): on the cleaned dataset the classes are \texttt{None}~$\approx 69\%$, \texttt{Mild}~$\approx 19\%$, \texttt{Moderate}~$\approx 11\%$, and \texttt{Severe}~$\approx 1\%$ ($5{,}699 / 1{,}551 / 925 / 84$). This imbalance --- especially the tiny \texttt{Severe} class --- is the single most important factor shaping every downstream modeling decision and motivates both the imbalanced-learning study and the use of macro-averaged metrics throughout.\\
+
+\begin{figure}[h]
+    \centering
+    \imgph{Two-panel figure: (left) \texttt{sii} class-distribution bar chart with count and \% annotations; (right) scatter of PCIAT Total vs \texttt{sii} with red dashed thresholds at 30/49/79}
+    \caption{Target distribution and its deterministic derivation from the PCIAT total score.}
+    \label{fig:cmi_target}
+\end{figure}
+
+After cleaning, imputation, and feature engineering, the final dataset contains \textbf{8,259 participants} described by \textbf{20 modeling columns} (18 predictors, plus \texttt{PCIAT-PCIAT\_Total} and the target \texttt{sii}). Only $2.4\%$ of the original records were removed, showing that preparation focused on correcting impossible values rather than aggressively discarding data.
+
+\section{Advanced Data Preprocessing}
+This module covers the two advanced preprocessing tasks applied to the prepared tabular data: anomaly detection (with dimensionality reduction for visualization) and imbalanced learning.
+
+\paragraph{Tooling and reproducibility.} The whole pipeline is implemented in Python. Imputation uses \texttt{miceforest} \cite{miceforest}; anomaly detection uses \texttt{pyod} \cite{pyod} (LOF, LODA, ABOD) and \texttt{isotree} (Extended Isolation Forest); resampling uses \texttt{imbalanced-learn} \cite{imblearn}; the predictive models use \texttt{scikit-learn} \cite{sklearn} and \texttt{xgboost} \cite{xgboost}; and explanations use \texttt{shap} \cite{shap} and \texttt{lime} \cite{lime}. A fixed seed (\texttt{random\_state}$=42$) is used for every stochastic step --- imputation, train/test splitting, cross-validation folds, randomized search, and the model initializations --- so that all reported numbers are reproducible. Each task reads a versioned intermediate dataset (\texttt{cmi\_preprocessed.csv} for anomaly detection, \texttt{cmi\_consensus\_clean.csv} for supervised learning), keeping the stages decoupled and auditable.
+
+\subsection{Anomaly Detection}
+Following the guideline to adopt at least three methods \emph{from different families}, we apply four complementary detectors, each flagging the top $\approx 1\%$ of records, and then combine them into a consensus. The rationale for spanning families is that ``outlier'' is not a single well-defined concept: a record can be anomalous because it lies in a low-density region (density-based view), because it is easy to isolate by random partitioning (isolation view), because the angles it forms with other points have unusually low variance (angle-based view), or because it falls in the sparse tail of many random projections (ensemble-projection view). Each definition has characteristic blind spots --- density methods struggle when densities vary smoothly, isolation methods can miss outliers buried inside a cluster's bounding box, and angle-based methods are sensitive to duplicate points --- so agreement \emph{across} families is a far stronger signal of a genuine anomaly than any single method's verdict.
+
+\paragraph{Setup.} All detectors operate on the prepared dataset ($8{,}259$ rows). The PCIAT total is dropped first to avoid biasing the geometry with the label source. The density-, ensemble-, and angle-based detectors (LOF, LODA, ABOD) operate on the same ten standardized numeric features (\texttt{Age}, \texttt{CGAS}, \texttt{Height}, \texttt{HeartRate}, \texttt{BIA-BMI}, \texttt{BIA-DEE}, \texttt{BIA-FFMI}, \texttt{BIA-FMI}, \texttt{MAP}, \texttt{PAQ\_Combined}); the Extended Isolation Forest uses all $19$ columns. The detectors are summarized in Table~\ref{tab:cmi_outliers}.
+
+\subsubsection{Methods}
+\paragraph{Extended Isolation Forest (model-based).} EIF \cite{eif} isolates points using oblique random hyperplanes; the harder a point is to isolate, the more anomalous. Using the \texttt{isotree} implementation with \texttt{ndim}$=19$ (fully extended splits), \texttt{ntrees}$=500$, and \texttt{sample\_size}$=256$, the anomaly score threshold was set at the $99$th percentile ($0.611$), flagging $83$ outliers ($1.00\%$). An outlier-vs-rest profile (Table~\ref{tab:cmi_eif_profile}) shows the flagged records are dominated by extreme body-composition values: \texttt{BIA-BIA\_FFMI}, \texttt{BIA-BIA\_FFM}, and \texttt{BIA-BIA\_DEE} are the strongest discriminators. The flagged group also skews older (mean age $10.2\to12.9$) and toward higher severity (mean \texttt{sii} $0.44\to0.71$), suggesting these extreme physiological readings are not purely random noise but partly correlate with the target.
+
+\begin{table}[H]
+\centering
+\small
+\caption{EIF outliers vs.\ the rest: features with the largest standardized mean difference.}
+\label{tab:cmi_eif_profile}
+\begin{tabular}{l c c c}
+\hline
+Feature & $z$-diff & mean (rest) & mean (out.) \\
+\hline
+BIA-BIA\_FFMI & 4.46 & 14.8  & 38.7 \\
+BIA-BIA\_FFM  & 4.32 & 75.2  & 1043.2 \\
+BIA-BIA\_DEE  & 3.09 & 1932  & 9336 \\
+BIA-FM        & 2.16 & --    & -- \\
+BIA-BIA\_BMI  & 1.72 & --    & -- \\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Local Outlier Factor (density-based).} LOF \cite{lof} compares the local density of a point to that of its neighbors. With \texttt{pyod}'s \texttt{LOF} (\texttt{n\_neighbors}$=20$, \texttt{contamination}$=0.012$), $80$ outliers were flagged. The highest LOF scores correspond to records with extreme \texttt{BIA-BIA\_DEE} and \texttt{BIA-BIA\_FFMI}.
+
+\paragraph{LODA (ensemble-based).} LODA \cite{loda} aggregates many one-dimensional random-projection histograms, providing a lightweight ensemble density estimate. With \texttt{n\_bins}$=10$ and \texttt{n\_random\_cuts}$=100$ and \texttt{contamination}$=0.01$, it flagged $83$ outliers, whose top-ranked members overlap strongly with LOF's.
+
+\paragraph{ABOD (angle-based).} ABOD \cite{abod} ranks points by the variance of the angles between them and pairs of other points; outliers see neighbors within a narrow angular cone. We used the fast $k$-NN approximation (\texttt{n\_neighbors}$=5$, \texttt{contamination}$=0.01$), flagging $83$ outliers. A subtlety arose here: MICE mean-matching produced exact duplicate rows, which give zero angle variance and undefined scores; a tiny Gaussian jitter ($\sigma=10^{-6}$) was added to break ties without changing the angular ranking. This is documented as an implementation decision.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Anomaly detectors: family, key configuration, and number of top-$\approx1\%$ outliers flagged.}
+\label{tab:cmi_outliers}
+\begin{tabular}{l l l c}
+\hline
+Method & Family & Key parameters & \# Out. \\
+\hline
+EIF  & Isolation & \texttt{ndim}=19, \texttt{ntrees}=500 & 83 \\
+LOF  & Density   & $k$=20, cont.\ 0.012 & 80 \\
+LODA & Ensemble  & \texttt{bins}=10, \texttt{cuts}=100 & 83 \\
+ABOD & Angle     & fast, $k$=5, cont.\ 0.01 & 83 \\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Threshold selection.} For the three \texttt{pyod} detectors the contamination parameter directly fixes the score quantile defining outliers; EIF instead uses an explicit $99$th-percentile cut on the anomaly score ($0.611$). All four therefore target roughly the top $1\%$, as the guidelines require, while leaving the exact count to each method (between $80$ and $83$). The detectors agree on a recognizable core of records driven by extreme bio-impedance values (daily energy expenditure and fat-free-mass index), but each family also contributes idiosyncratic flags --- a key motivation for the consensus step.
+
+\paragraph{Score behavior.} The four detectors expose the anomaly structure in characteristically different ways. ABOD scores span roughly eighteen orders of magnitude because near-duplicate imputed rows collapse the angle variance toward zero; the log-binned distribution therefore has an extremely heavy tail and the jitter correction is essential for a well-defined threshold. LOF scores are bounded and interpretable as density ratios, with the top records reaching factors of $8$--$12\times$ the local density. LODA produces a compact score band in which the flagged tail ($\gtrsim 0.05$) separates cleanly from the bulk ($\sim 0.03$). EIF yields a smooth, near-continuous score whose $99$th percentile gives an unambiguous cut. Despite these different scales, the four top-ranked sets overlap on a shared core of bio-impedance-extreme records (participant ids $5448$, $6273$, $5615$, $6763$, $5221$, $6010$), which is the strongest evidence that the consensus targets genuine anomalies rather than method artifacts. Figure~\ref{fig:cmi_outlier_scores} shows the four score distributions with their respective thresholds.
+
+\begin{figure}[h]
+    \centering
+    \imgph{2$\times$2 grid of anomaly-score distributions, one per detector (ABOD log-binned, LOF decision score, LODA decision score, EIF score), each with a vertical line marking the operative outlier threshold}
+    \caption{Anomaly-score distributions and thresholds for the four detectors.}
+    \label{fig:cmi_outlier_scores}
+\end{figure}
+
+\subsubsection{Low-dimensional visualization}
+To satisfy the visualization requirement and inspect the detectors qualitatively, the standardized feature space is projected to 2D with PCA (PC1 $25.6\%$, PC2 $7.2\%$, cumulative $32.8\%$ of variance). Each detector's flagged points are overlaid on the projection (Figure~\ref{fig:cmi_pca_outliers}). The low cumulative variance explains why some outliers --- especially angle- and density-based ones --- do not appear visually separated in 2D even though they are extreme in the full space.
+
+\begin{figure}[h]
+    \centering
+    \imgph{2$\times$2 panel of PCA(2D) scatter plots (PC1 vs PC2), one per detector (EIF/LOF/LODA/ABOD), inliers in steel-blue and the $\sim$83 flagged outliers in red}
+    \caption{PCA projection of the four anomaly detectors' outliers (visualization only).}
+    \label{fig:cmi_pca_outliers}
+\end{figure}
+
+\subsubsection{Consensus and treatment}
+Because each method captures a different notion of ``anomalous,'' we combine them by majority voting rather than trusting any single detector. The vote distribution is highly concentrated: $8{,}051$ records receive zero votes, $142$ one vote, $32$ two votes, $13$ three votes, and $21$ all four votes. Pairwise overlap between methods is moderate (Table~\ref{tab:cmi_overlap}: $27$--$37$ shared flags out of $\sim 83$), confirming that the families are genuinely complementary.\\
+
+\begin{table}[H]
+\centering
+\small
+\caption{Pairwise overlap of flagged outliers between detectors (diagonal = total flagged by each method).}
+\label{tab:cmi_overlap}
+\begin{tabular}{l c c c c}
+\hline
+ & ABOD & EIF & LODA & LOF \\
+\hline
+ABOD & 83 & 30 & 36 & 33 \\
+EIF  & 30 & 83 & 34 & 37 \\
+LODA & 36 & 34 & 83 & 27 \\
+LOF  & 33 & 37 & 27 & 80 \\
+\hline
+\end{tabular}
+\end{table}
+
+We adopt a conservative \textbf{consensus rule}: a record is removed only if flagged by \emph{at least two of the four} detectors. This drops $66$ records ($0.80\%$), producing the cleaned dataset \texttt{cmi\_consensus\_clean.csv} ($8{,}193\times 20$) used for all supervised modeling. Figure~\ref{fig:cmi_removed_kept} breaks down, for each detector, how many of its flags survived into the consensus. Removing rather than imputing these points is justified because they are genuinely extreme body-composition records (not merely missing values) and represent a negligible fraction of the data, while requiring agreement across families avoids discarding points that only one detector finds suspicious.\\
+
+\paragraph{Why remove rather than repair.} The guidelines permit either removing outliers or treating their anomalous attributes as missing and re-imputing them. We chose removal deliberately. The flagged records are dominated by jointly extreme bio-impedance values (Table~\ref{tab:cmi_eif_profile}): for these participants it is the whole body-composition vector that is implausible, not one isolated field, so re-imputing ``the anomalous variable'' would mean re-imputing most of the row from the few remaining trustworthy fields --- effectively fabricating the record. Given that the consensus set is only $0.80\%$ of the data and that several of these rows are duplication artifacts of the synthetic-sample generation, deletion is both safer and simpler than imputation, and it guarantees by construction that the residual extreme values cannot re-enter the modeling data. The conservative two-vote threshold is itself a compromise: a one-vote rule would have removed $208$ records (many flagged by a single, possibly idiosyncratic detector), whereas a unanimous four-vote rule would keep only the $21$ records all methods agree on and let through borderline cases that three of four detectors consider anomalous.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Bar chart with a log $y$-axis of the consensus vote distribution (number of records flagged by 0, 1, 2, 3, or 4 detectors)}
+    \caption{Consensus vote distribution across the four detectors.}
+    \label{fig:cmi_consensus}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Per-method stacked bar chart: for each detector, the count of its flagged outliers split into ``removed by consensus'' ($\geq 2$ votes) and ``kept'' ($<2$ votes)}
+    \caption{Per-method outliers: removed by consensus vs.\ retained.}
+    \label{fig:cmi_removed_kept}
+\end{figure}
+
+\subsection{Imbalanced Learning}
+We define a simple imbalanced classification task --- predicting \texttt{sii} with a Decision Tree --- and study how resampling changes class distribution and performance, as required by the guidelines.
+
+\paragraph{Setup.} The consensus-clean dataset is split $80/20$ with stratification (\texttt{random\_state}$=42$), giving $6{,}554$ training and $1{,}639$ test records; \texttt{PCIAT-PCIAT\_Total} is excluded as leakage. Features are standardized (fit on train only). Resampling is applied to the \emph{training set only}, and for each resampled set a Decision Tree is tuned by $5$-fold stratified cross-validation over a broad grid (criterion, depth, leaf/split sizes, \texttt{class\_weight}, \texttt{max\_features}, \texttt{splitter}, \texttt{ccp\_alpha}), optimizing macro-F1.
+
+\paragraph{Resampling techniques.} We apply three undersamplers and one oversampler \cite{imblearn,adasyn}:
+\begin{itemize}
+    \item \textbf{Tomek Links} (undersampling): removes borderline majority points forming Tomek pairs. Resulting counts $\{0{:}4117, 1{:}906, 2{:}546, 3{:}66\}$ --- a mild cleanup.
+    \item \textbf{Edited Nearest Neighbours} (undersampling): removes majority points misclassified by their neighbors, aggressively shrinking the minority-adjacent majority: $\{0{:}4015, 1{:}139, 2{:}55, 3{:}66\}$.
+    \item \textbf{Random Undersampling}: balances perfectly down to the smallest class, $\{0{:}66, 1{:}66, 2{:}66, 3{:}66\}$ --- discarding the vast majority of the data.
+    \item \textbf{ADASYN} (oversampling): adaptively synthesizes minority samples to near-balance, $\{0{:}4527, 1{:}4480, 2{:}4542, 3{:}4509\}$.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Row of five bar charts comparing the \texttt{sii} class distribution: Original vs Tomek, ENN, Random-Under, ADASYN}
+    \caption{Training-set class distribution before and after each resampling strategy.}
+    \label{fig:cmi_resample}
+\end{figure}
+
+\paragraph{Results and discussion.} Table~\ref{tab:cmi_imbalance} reports test-set metrics, visualized side by side in Figure~\ref{fig:cmi_imbalance_perf}. The results illustrate the classic accuracy/recall trade-off of imbalanced learning. ADASYN attains by far the highest cross-validated macro-F1 ($0.742$) but this does not transfer to the test set (it largely reflects fitting synthetic minority points), where macro-F1 is $0.289$. Random undersampling maximizes \emph{minority recall} ($0.388$) --- the only strategy that meaningfully detects \texttt{Severe} cases --- but collapses overall accuracy to $0.33$ because it throws away $98\%$ of the majority data. ENN attains the highest accuracy ($0.681$) by behaving almost like the majority classifier, at the cost of minority recall. No resampler dominates: undersampling trades accuracy for balanced recall, oversampling inflates CV scores without robust test gains, and the baseline remains competitive on weighted F1. This confirms that the difficulty here is intrinsic class overlap, not merely class frequency.\\
+
+\paragraph{Mechanism behind each result.} The behaviors are explained by what each technique does to the feature space. Tomek Links only cleans the immediate boundary between classes, so the distribution barely changes and so does performance. ENN is more aggressive at the boundary --- it deletes majority points whose neighborhood disagrees with them --- which here strips away most of the \texttt{Mild} and \texttt{Moderate} examples that sit \emph{between} \texttt{None} and the severe end, leaving a tree that defaults to \texttt{None} and thus scores high accuracy but poor minority recall. Random undersampling discards $98\%$ of the data to reach a $66{:}66{:}66{:}66$ balance, so the tree sees the minority classes on an equal footing and finally assigns non-trivial recall to \texttt{Severe}, but with only $264$ training rows it generalizes poorly and overall accuracy collapses. ADASYN synthesizes minority points in proportion to local difficulty; the resulting near-perfect CV macro-F1 ($0.742$) is largely the classifier memorizing dense synthetic neighborhoods, and the gap to the test macro-F1 ($0.289$) is a textbook illustration of why oversampling must be evaluated on untouched real data. The practical lesson is that, on this dataset, the right tool depends on the operating goal: random undersampling if recall on severe cases is paramount, the lightly-cleaned baseline if balanced overall behavior is preferred.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Decision Tree under different resampling strategies (test set; CV F1 is the best cross-validated macro-F1).}
+\label{tab:cmi_imbalance}
+\begin{tabular}{l c c c c}
+\hline
+Strategy & CV F1 & Acc & F1$_{\text{macro}}$ & Rec$_{\text{macro}}$ \\
+\hline
+Baseline       & 0.293 & 0.616 & 0.285 & 0.285 \\
+Tomek Links    & 0.310 & 0.556 & 0.275 & 0.274 \\
+ENN            & 0.339 & 0.681 & 0.265 & 0.281 \\
+Random Under   & 0.402 & 0.328 & 0.247 & \textbf{0.388} \\
+ADASYN         & \textbf{0.742} & 0.503 & \textbf{0.289} & 0.300 \\
+\hline
+\end{tabular}
+\end{table}
+
+The best Decision-Tree configuration selected per strategy (Table~\ref{tab:cmi_imbalance_params}) is itself informative: undersampling on balanced data favors shallower, pruned trees (Random Undersampling selects \texttt{ccp\_alpha}$=0.005$, depth $15$, \texttt{class\_weight=balanced}), whereas oversampled and baseline data drive the search toward unconstrained, fully grown trees --- a symptom of fitting the dense (synthetic) regions.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Best Decision-Tree hyper-parameters per resampling strategy (5-fold CV, macro-F1).}
+\label{tab:cmi_imbalance_params}
+\begin{tabular}{l l c c}
+\hline
+Strategy & criterion & depth & \texttt{ccp\_alpha} \\
+\hline
+Baseline     & entropy & 15   & 0.000 \\
+Tomek Links  & gini    & None & 0.000 \\
+ENN          & gini    & 20   & 0.000 \\
+Random Under & gini    & 15   & 0.005 \\
+ADASYN       & gini    & None & 0.000 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Grouped bar chart comparing Accuracy, macro-F1, and macro-recall of the Decision Tree across the five strategies (Baseline, Tomek, ENN, Random-Under, ADASYN), with value labels}
+    \caption{Decision Tree performance across resampling strategies.}
+    \label{fig:cmi_imbalance_perf}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \imgph{2$\times$3 grid of confusion matrices (one per strategy + baseline) and a companion 2$\times$3 grid of one-vs-rest ROC curves}
+    \caption{Confusion matrices and one-vs-rest ROC curves across resampling strategies.}
+    \label{fig:cmi_imbalance_cm}
+\end{figure}
+
+\section{Advanced Classification, Regression, and Explainability}
+This module addresses the core supervised tasks: a multi-class classification of \texttt{sii} with five learners, a non-linear regression of the continuous internet-use score, an explainability analysis, and a closing experiment that combines the best classifier with the best resampler.
+
+\subsection{Classification}
+\paragraph{Common protocol.} All classifiers use the consensus-clean dataset ($8{,}193$ rows), the same $18$ predictors (excluding \texttt{sii} and \texttt{PCIAT-PCIAT\_Total}), and an identical stratified $80/20$ split ($6{,}554$ train / $1{,}639$ test, \texttt{random\_state}$=42$), so results are directly comparable. Class imbalance is addressed with \emph{balanced sample weights} ($w_0{=}0.36$, $w_1{=}1.33$, $w_2{=}2.24$, $w_3{=}24.83$) passed through cross-validation. Hyper-parameters are tuned with \texttt{RandomizedSearchCV} ($5$-fold stratified, scoring macro-F1). Standardization is applied for the scale-sensitive learners (Logistic Regression, SVM, MLP) and omitted for the tree ensembles. Macro-averaged metrics are emphasized because of the imbalance.
+
+\subsubsection{Logistic Regression}
+\paragraph{Model and tuning.} A multinomial logistic regression \cite{sklearn} was tuned over $80$ candidates spanning the regularization strength $C$ (log-uniform), penalty (\texttt{l1}/\texttt{l2}/\texttt{elasticnet}) with compatible solvers, \texttt{l1\_ratio}, and \texttt{class\_weight}. The best configuration was $C=0.235$, \texttt{l1} penalty, \texttt{saga} solver (CV macro-F1 $0.346$).
+\paragraph{Results.} On the test set the tuned model achieves accuracy $0.466$ and macro-F1 $0.27$. It is strong on \texttt{None} (F1 $0.67$) but weak on the minorities (\texttt{Mild} $0.16$, \texttt{Moderate} $0.23$, \texttt{Severe} $0.02$). As a linear model it captures only additive effects and serves as an interpretable baseline. Errors fall almost exclusively between adjacent severity levels; direct \texttt{None}$\leftrightarrow$\texttt{Severe} confusion is rare, indicating the model respects the ordinal structure. The selection of an $L_1$ penalty with a small $C$ is itself diagnostic: the search preferred a heavily regularized, sparse model, consistent with the finding that only a handful of features (internet hours, CGAS, age) carry usable linear signal while the collinear bio-impedance block contributes redundancy that $L_1$ shrinks away.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Three-panel figure: mean $|$coefficient$|$ per feature bar chart, confusion matrix (Blues), and one-vs-rest ROC curves}
+    \caption{Logistic Regression: coefficient importance, confusion matrix, and ROC curves.}
+    \label{fig:cmi_logreg}
+\end{figure}
+
+\subsubsection{Support Vector Machine}
+\paragraph{Model and tuning.} An SVM \cite{sklearn} extends the linear baseline by maximizing the inter-class margin and, through the kernel trick, can implicitly carve out non-linear boundaries while remaining a max-margin method. Because the kernel relies on inner products, features were standardized. The search covered $40$ candidates with compatibility-aware sub-grids: kernel (\texttt{rbf}/\texttt{poly}/\texttt{linear}), penalty $C$ (log-uniform $[10^{-2},10^{3}]$), \texttt{gamma}, polynomial \texttt{degree}/\texttt{coef0}, and \texttt{class\_weight}, optimizing macro-F1. The budget is smaller than for the other learners because SVM training scales super-linearly in the number of samples.
+\paragraph{Results.} The best model is an RBF kernel with a moderate, strongly-regularizing penalty ($C=0.10$, \texttt{gamma}$=$\texttt{scale}; CV macro-F1 $0.363$). On the test set it reaches accuracy $0.413$ and macro-F1 $0.28$, with per-class F1 \texttt{None} $0.59$, \texttt{Mild} $0.25$, \texttt{Moderate} $0.24$, \texttt{Severe} $0.03$. The close train/test accuracy gap ($0.441$ vs $0.413$) confirms the chosen margin generalizes rather than memorizes; that the optimum is a low-$C$ RBF rather than a high-$C$, high-\texttt{gamma} ``wiggly'' boundary again signals that the usable signal is smooth and thin. As a non-linear kernel exposes no per-feature coefficients, importance is assessed with permutation (the same lens as the MLP), and it again ranks self-reported internet hours and CGAS first.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Three-panel figure: permutation-importance bar chart (drop in macro-F1), confusion matrix (Blues), and one-vs-rest ROC curves built from the SVM decision function}
+    \caption{SVM: permutation importance, confusion matrix, and ROC curves.}
+    \label{fig:cmi_svm}
+\end{figure}
+
+\subsubsection{Neural Network (MLP)}
+\paragraph{Model and tuning.} A multi-layer perceptron \cite{sklearn} was tuned over $60$ candidates spanning architecture (one to three hidden layers, $64$--$256$ units), activation (\texttt{relu}/\texttt{tanh}), solver, $L_2$ penalty $\alpha$, learning rate, and batch size. The best model is a single hidden layer of $128$ ReLU units (\texttt{adam}, $\alpha=0.01$, learning rate $0.01$, batch $128$; CV macro-F1 $0.362$).
+\paragraph{Convergence and overfitting.} Overfitting is controlled by early stopping on a $10\%$ internal validation split (patience $15$--$20$) together with $L_2$ regularization. The train/test accuracy gap is negligible ($0.351$ vs $0.348$), confirming the network does not overfit; the modest absolute accuracy reflects the genuine difficulty and the macro-F1 objective, which trades majority accuracy for minority recall (e.g.\ \texttt{Mild} recall $0.45$, \texttt{Severe} recall $0.41$).
+\paragraph{Results.} Test accuracy $0.348$, macro-F1 $0.25$; per-class F1 \texttt{None} $0.49$, \texttt{Mild} $0.30$, \texttt{Moderate} $0.18$, \texttt{Severe} $0.04$. The interesting outcome is that the search settled on a \emph{single} hidden layer rather than the deeper architectures offered in the grid. This is expected: with only $\sim 6{,}500$ training rows and $18$ moderately informative features, deeper networks have nothing extra to learn and merely add variance, so the regularization machinery (early stopping and a relatively strong $\alpha=0.01$) correctly favors the simplest competitive capacity. The MLP is also the model that leans hardest into minority recall (\texttt{Severe} recall $0.41$, the highest of any classifier), which is why its accuracy is the lowest --- it spends predictive budget on the rare classes that the others largely ignore.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Confusion matrix and one-vs-rest ROC curves for the tuned MLP, plus a permutation-importance bar chart}
+    \caption{Neural Network: confusion matrix, ROC curves, and permutation importance.}
+    \label{fig:cmi_mlp}
+\end{figure}
+
+\subsubsection{AdaBoost}
+\paragraph{Model and tuning.} AdaBoost with decision-tree base learners was tuned over $60$ candidates spanning base-tree depth/leaf size, number of estimators, and learning rate. The best configuration uses $800$ estimators, a small learning rate ($0.01$), and depth-$4$ base trees --- a classic ``many small steps'' regime --- and achieves the \emph{highest cross-validated macro-F1 of all five classifiers} ($0.404$). Stumps alone proved too weak to capture the $18$-feature interactions.
+\paragraph{Results.} Test accuracy $0.436$, macro-F1 $0.30$; per-class F1 \texttt{None} $0.59$, \texttt{Mild} $0.28$, \texttt{Moderate} $0.28$, \texttt{Severe} $0.04$. Tuning notably improved \texttt{Mild} and \texttt{Moderate} recall over the stump baseline. Impurity-based importance is led by self-reported internet hours and the CGAS score.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Feature-importance bar chart, confusion matrix, and one-vs-rest ROC curves for tuned AdaBoost}
+    \caption{AdaBoost: feature importance, confusion matrix, and ROC curves.}
+    \label{fig:cmi_ada}
+\end{figure}
+
+\subsubsection{Gradient Boosting (XGBoost)}
+\paragraph{Model and tuning.} XGBoost \cite{xgboost} (\texttt{multi:softprob}, \texttt{hist}) was tuned over $60$ candidates spanning number of trees, learning rate, depth, \texttt{min\_child\_weight}, subsampling, column subsampling, \texttt{gamma}, and $L_2$ regularization. The best model uses shallow trees (depth $3$), $600$ rounds, learning rate $0.01$, and strong regularization (\texttt{reg\_lambda}$=5$, \texttt{gamma}$=1$; CV macro-F1 $0.395$) to guard against overfitting the tiny \texttt{Severe} class.
+\paragraph{Results.} The XGBoost \emph{baseline} attains the highest single-model test accuracy ($0.517$); the macro-F1-tuned model reaches accuracy $0.451$ and macro-F1 $0.30$, with the most balanced per-class profile (\texttt{None} $0.62$, \texttt{Mild} $0.29$, \texttt{Moderate} $0.26$, \texttt{Severe} $0.04$). As with the other learners, accuracy drops when tuning for macro-F1 because minority recall is lifted at the expense of majority precision. The strongly regularized winning configuration (shallow depth-$3$ trees, $\lambda=5$, $\gamma=1$, learning rate $0.01$) is the clearest signal across the whole study that the dataset rewards conservative, high-bias models: every degree of freedom the search could have spent on depth or weaker regularization was instead spent on shrinkage, because the genuine signal is thin and easily overfit.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Gain-based feature-importance bar chart, confusion matrix, and one-vs-rest ROC curves for tuned XGBoost}
+    \caption{XGBoost: feature importance, confusion matrix, and ROC curves.}
+    \label{fig:cmi_xgb}
+\end{figure}
+
+\subsubsection{Classification comparison and discussion}
+Table~\ref{tab:cmi_clf} consolidates the tuned results.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Tuned classifiers on the test set. CV F1 is the best cross-validated macro-F1.}
+\label{tab:cmi_clf}
+\begin{tabular}{l c c c}
+\hline
+Model & CV F1 & Acc & F1$_{\text{macro}}$ \\
+\hline
+Logistic Regression & 0.346 & \textbf{0.466} & 0.27 \\
+SVM (RBF)           & 0.363 & 0.413 & 0.28 \\
+Neural Network (MLP)& 0.362 & 0.348 & 0.25 \\
+AdaBoost            & \textbf{0.404} & 0.436 & 0.30 \\
+XGBoost             & 0.395 & 0.451 & 0.30 \\
+\hline
+\end{tabular}
+\end{table}
+
+The per-class F1 scores (Table~\ref{tab:cmi_perclass}) make the imbalance effect explicit: every model is competent on \texttt{None}, degrades on \texttt{Mild}/\texttt{Moderate}, and effectively fails on \texttt{Severe}. The best hyper-parameters (Table~\ref{tab:cmi_clf_params}) all converge on the same regularization story --- small learning rates with many estimators for the boosters, and strong penalties for the linear, kernel, and neural models (small $C$ for both Logistic Regression and the SVM, a sizeable $\alpha$ for the MLP) --- reflecting how easily this small, noisy dataset overfits.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Per-class F1 on the test set (tuned models). Support: None 1132, Mild 307, Moderate 183, Severe 17.}
+\label{tab:cmi_perclass}
+\begin{tabular}{l c c c c}
+\hline
+Model & None & Mild & Mod. & Sev. \\
+\hline
+Logistic Reg. & 0.67 & 0.16 & 0.23 & 0.02 \\
+SVM (RBF)     & 0.59 & 0.25 & 0.24 & 0.03 \\
+MLP           & 0.49 & 0.30 & 0.18 & 0.04 \\
+AdaBoost      & 0.59 & 0.28 & 0.28 & 0.04 \\
+XGBoost       & 0.62 & 0.29 & 0.26 & 0.04 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Best hyper-parameters selected per classifier (randomized search, 5-fold CV, macro-F1).}
+\label{tab:cmi_clf_params}
+\begin{tabular}{l p{0.62\columnwidth}}
+\hline
+Model & Best configuration \\
+\hline
+Logistic Reg. & $C{=}0.235$, \texttt{l1}, \texttt{saga} \\
+SVM (RBF)     & $C{=}0.10$, \texttt{gamma}$=$\texttt{scale} \\
+MLP           & hidden $(128)$, ReLU, \texttt{adam}, $\alpha{=}0.01$, lr $0.01$ \\
+AdaBoost      & $800$ trees, lr $0.01$, base depth $4$ \\
+XGBoost       & depth $3$, $600$ trees, lr $0.01$, $\lambda{=}5$, $\gamma{=}1$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Confusion structure.} Representative test confusion matrices (rows = true, columns = predicted; order None/Mild/Mod./Sev.) confirm the adjacent-class error pattern. For XGBoost and AdaBoost respectively,
+{\setlength{\arraycolsep}{2.5pt}\small
+\[
+\begin{bmatrix} 574 & 186 & 227 & 145 \\ 102 & 89 & 76 & 40 \\ 41 & 34 & 72 & 36 \\ 3 & 3 & 6 & 5 \end{bmatrix}\!,~
+\begin{bmatrix} 530 & 238 & 230 & 134 \\ 94 & 97 & 83 & 33 \\ 32 & 43 & 83 & 25 \\ 5 & 2 & 6 & 4 \end{bmatrix}\!.
+\]}
+In both, the off-diagonal mass clusters near the diagonal (true $\to$ neighboring class), while the extreme \texttt{None}/\texttt{Severe} corners stay light.
+
+\paragraph{Overall behavior.} No model clears macro-F1 $0.30$ on the test set, reflecting the intrinsic difficulty of predicting internet-use severity from physical and fitness measurements alone. The ensembles (AdaBoost, XGBoost) lead on cross-validated macro-F1 and offer the most balanced per-class behavior, while Logistic Regression edges out raw accuracy by leaning toward the majority class. The SVM and MLP sit in the middle of the pack: both are competitive on cross-validated macro-F1 ($0.363$ and $0.362$) but, like the others, cannot convert that into strong minority-class precision on the held-out set. The \texttt{Severe} class (only $17$ test cases) is essentially unlearnable from these features (F1 $\leq 0.04$ everywhere), which is the single class that performs poorly across every classifier. Two distinct causes compound here. The first is statistical: with $83$ severe records in the whole dataset, even perfect generalization would rest on a handful of test examples, so the variance of any \texttt{Severe} metric is enormous. The second is representational: as the LIME analysis below makes concrete, severe cases do not occupy a distinctive region of the physical-measurement space --- a child with severe problematic internet use can have an entirely ordinary body-composition and fitness profile --- so no decision boundary in this feature space can carve them out. This is a substantive negative result, not merely a tuning shortfall, and it directly motivates the multimodal direction discussed in the conclusion.
+
+\paragraph{Class-wise pattern.} Across all models, errors concentrate between \emph{adjacent} severity levels and \texttt{None}$\leftrightarrow$\texttt{Severe} confusion is rare. This is consistent with the ordinal nature of \texttt{sii}: the four-class flat treatment used here ignores order, so the models effectively rediscover it through the confusion structure. This suggests an ordinal-regression formulation as a natural extension.
+
+\paragraph{Effect of tuning.} It is instructive that for three of the five models the macro-F1-tuned model has \emph{lower} test accuracy than its untuned baseline (Table~\ref{tab:cmi_baseline}): XGBoost falls from $0.517$ to $0.451$, the MLP from $0.437$ to $0.348$, and the SVM from $0.446$ to $0.413$. This is not a regression in quality but a direct consequence of optimizing macro-F1 with balanced sample weights, which redistributes predictive effort from the dominant \texttt{None} class toward the minorities --- raising minority recall while sacrificing the ``cheap'' accuracy obtainable by predicting the majority. Reporting both views avoids the common pitfall of treating raw accuracy as the headline metric on an imbalanced problem.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Baseline (untuned) vs.\ tuned test accuracy per classifier.}
+\label{tab:cmi_baseline}
+\begin{tabular}{l c c}
+\hline
+Model & Acc (baseline) & Acc (tuned) \\
+\hline
+Logistic Reg. & 0.461 & 0.466 \\
+SVM (RBF)     & 0.446 & 0.413 \\
+MLP           & 0.437 & 0.348 \\
+AdaBoost      & 0.394 & 0.436 \\
+XGBoost       & 0.517 & 0.451 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Regression}
+\label{sec:regression}
+\paragraph{Setup.} The regression task predicts the continuous \texttt{PCIAT-PCIAT\_Total} score (range $[0,93]$; mean $28.1$, std $17.0$; right-skewed). The label-defining \texttt{sii} is dropped to avoid leakage, leaving the same $18$ predictors. An $80/20$ split is used. We compare two \emph{non-linear} regressors --- XGBoost and an MLP --- each tuned with $60$-candidate randomized search ($5$-fold CV, RMSE objective). Performance is measured with MAE, RMSE, and $R^2$. The right-skew of the target (Figure~\ref{fig:cmi_reg_target}) is the central difficulty: the long upper tail of high-severity scores is sparsely populated, so squared-error losses are dominated by the dense low-score region.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Two-panel figure: histogram of \texttt{PCIAT-PCIAT\_Total} with mean and median lines, and a companion box plot showing the right skew and upper tail}
+    \caption{Distribution of the regression target \texttt{PCIAT-PCIAT\_Total}.}
+    \label{fig:cmi_reg_target}
+\end{figure}
+
+\paragraph{Results.} Both models substantially beat a naive mean predictor (Table~\ref{tab:cmi_reg}). XGBoost is best on every metric (RMSE $12.03$, MAE $8.93$, $R^2=0.484$), narrowly ahead of the MLP ($R^2=0.461$). Roughly half the variance is explained --- consistent with the modest feature--target correlations seen in Module~0. Both models exhibit regression to the mean on the skewed target (over-predicting low scores, under-predicting high scores), which is the continuous-target analogue of the classification failure on \texttt{Severe}: the upper tail of the PCIAT score is under-represented and weakly correlated with the physical features, so a squared-error-minimizing model pulls its predictions toward the centre of mass of the data. Notably, casting the problem as regression and reading off the implied severity is \emph{not} obviously better than classifying directly --- both routes are limited by the same thin signal --- but the regression view is more honest about uncertainty, since the wide residual spread visible in Figure~\ref{fig:cmi_reg_diag} communicates the irreducible error far more vividly than a confusion matrix does. Gain-based and permutation importances agree that self-reported internet hours dominate, followed by the CGAS score, age, and combined physical activity (Figure~\ref{fig:cmi_reg_importance}).
+
+\begin{figure}[h]
+    \centering
+    \imgph{Side-by-side bar charts: XGBoost gain-based feature importance and MLP permutation importance, both ranking \texttt{computerinternet\_hoursday} and \texttt{CGAS} highest}
+    \caption{Regression feature importance: XGBoost gain (left) and MLP permutation (right).}
+    \label{fig:cmi_reg_importance}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Non-linear regressors predicting \texttt{PCIAT-PCIAT\_Total} (test set), baseline vs tuned.}
+\label{tab:cmi_reg}
+\begin{tabular}{l l c c c}
+\hline
+Model & Variant & RMSE & MAE & $R^2$ \\
+\hline
+XGBoost & baseline & 12.20 & 9.06 & 0.470 \\
+XGBoost & tuned    & \textbf{12.03} & \textbf{8.93} & \textbf{0.484} \\
+MLP     & baseline & 12.54 & 9.40 & 0.439 \\
+MLP     & tuned    & 12.30 & 9.24 & 0.461 \\
+Naive   & mean     & 16.75 & 13.66 & $-0.000$ \\
+\hline
+\end{tabular}
+\end{table}
+
+The best XGBoost regressor uses depth-$4$ trees, $600$ rounds, learning rate $0.01$, subsample $0.7$, and \texttt{gamma}$=1$; the best MLP uses two hidden layers $(256,128)$ with \texttt{tanh}, $\alpha=10^{-4}$, and \texttt{adam}. Tuning yields only a marginal improvement over the already-regularized baselines, indicating the ceiling is set by the features, not by model capacity. The cross-validated RMSE values ($12.18$ for XGBoost, $12.30$ for the MLP) closely track the test RMSE, evidencing stable generalization.
+
+\begin{figure}[h]
+    \centering
+    \imgph{Predicted-vs-actual scatter (XGBoost \& MLP side by side, with perfect-fit diagonal) and residual-vs-predicted plots for both models}
+    \caption{Regression diagnostics: predicted-vs-actual and residual plots.}
+    \label{fig:cmi_reg_diag}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Overlaid histograms of the absolute prediction error for XGBoost and MLP on the test set, each annotated with its MAE line}
+    \caption{Absolute-error distribution for the two regressors.}
+    \label{fig:cmi_abserr}
+\end{figure}
+
+The absolute-error distribution (Figure~\ref{fig:cmi_abserr}) confirms that both models concentrate their errors at low magnitudes but retain a long tail of large mistakes on the high-severity records, the same upper-tail difficulty seen in the target distribution.
+
+\subsection{Explainability (XAI)}
+To interpret the predictive models we combine a global tree-based attribution, model-agnostic local explanations, and permutation importance \cite{shap,lime}.\\
+
+\paragraph{SHAP (XGBoost).} A \texttt{TreeExplainer} produces per-class Shapley values for the XGBoost classifier (tensor shape $1639\times18\times4$). The global mean-$|$SHAP$|$ bar chart (Figure~\ref{fig:cmi_shap}) confirms that \texttt{PreInt\_EduHx-computerinternet\_hoursday} is by far the dominant feature, followed by \texttt{CGAS-CGAS\_Score}; the per-class beeswarm plots show a monotonic relationship --- more self-reported internet hours push predictions toward higher severity.\\
+
+\paragraph{LIME (MLP).} A local LIME explanation was generated for a hard, misclassified instance (\texttt{id}$=5827$, true \texttt{Severe}, predicted \texttt{None}). It reveals why the model failed (Figure~\ref{fig:cmi_lime}): features such as low internet hours and a low body-frame value pushed the prediction toward \texttt{None}, illustrating that this participant's physical profile is atypical for their (severe) label --- exactly the kind of case that drives the irreducible error on the \texttt{Severe} class.\\
+
+\paragraph{Permutation importance.} Computed for the MLP (and regression models), permutation importance corroborates the SHAP ranking: internet hours, CGAS, age, and combined physical activity carry the signal, while the collinear BIA body-composition variables individually contribute little.\\
+
+\begin{figure}[h]
+    \centering
+    \imgph{SHAP global mean-$|$SHAP$|$ bar chart with the four-class contributions stacked per feature, alongside a per-class beeswarm summary showing the signed, value-colored SHAP values}
+    \caption{SHAP global importance and beeswarm summary for the XGBoost classifier.}
+    \label{fig:cmi_shap}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Two panels for the misclassified instance id=5827 (true Severe, predicted None): a LIME local-contribution bar chart toward class None, and the MLP predicted class-probability bar}
+    \caption{LIME local explanation and predicted class probabilities for a misclassified severe case.}
+    \label{fig:cmi_lime}
+\end{figure}
+
+\paragraph{Why three explainers.} The three methods answer complementary questions and their agreement strengthens the conclusions. SHAP gives a theoretically grounded, globally consistent attribution that decomposes every prediction into additive per-feature contributions, and its per-class beeswarms reveal the \emph{direction} of each effect (more internet hours monotonically raise predicted severity), not merely its magnitude. Permutation importance is model-agnostic and measures the operational cost of destroying a feature, serving as an independent check that does not depend on the model's internal structure --- crucial for the black-box MLP. LIME zooms all the way in to a single decision, fitting a local surrogate that exposes exactly which feature values tipped one prediction; applied to the misclassified severe case it converts the abstract ``\texttt{Severe} is hard'' statement into a concrete mechanism. That a coefficient-based linear view, an impurity/gain-based tree view, a permutation view, and a Shapley view all crown the same two features is strong evidence that the ranking is a property of the data rather than of any one algorithm.\\
+
+Across all explanation methods the conclusion is consistent and clinically sensible: \emph{self-reported daily internet hours} and \emph{global functioning (CGAS)} are the strongest predictors of problematic-internet-use severity, whereas the physical and bio-impedance measurements --- though numerous --- carry comparatively weak and largely redundant signal. This is a reassuring sanity check (the one behavioral, internet-adjacent feature dominates) but also a cautionary one: a model that leans primarily on self-reported screen time is partly re-deriving the answer from a close behavioral correlate rather than discovering it from independent physiological evidence.
+
+\subsection{Combining Techniques: XGBoost with ADASYN}
+As a final, synthesizing experiment we connect the two threads of the previous modules. Module~1 identified ADASYN as the most effective resampler and XGBoost (Section~\ref{sec:regression} and above) as the strongest classifier, so a natural question is whether \emph{data-level} rebalancing (ADASYN oversampling) outperforms the \emph{algorithm-level} rebalancing (balanced sample weights) that every Module~2 model already uses --- on our best model.
+
+\paragraph{Protocol.} Two configurations are compared under an \emph{identical} protocol (same split, seed, hyper-parameter grid, $40$ search iterations, and macro-F1 scoring): \textbf{(B) Weighted reference}, a balanced-sample-weight XGBoost reproducing the standalone setup, and \textbf{(C) ADASYN}, a plain XGBoost preceded by ADASYN. Two design points are essential. First, \emph{no leakage}: ADASYN is placed inside an \texttt{imblearn} pipeline so it is applied only to the training portion of each CV fold, never to the validation fold or the test set --- the same fix introduced in the imbalanced-learning study. Second, balanced weights are dropped in config~C because ADASYN already equalizes the classes, making post-hoc weights $\approx$ uniform; this keeps ADASYN the sole imbalance mechanism for a clean contrast. \texttt{StandardScaler} is retained in both pipelines: XGBoost is scale-invariant, but ADASYN's $k$-nearest-neighbour synthesis is distance-based and would otherwise be dominated by large-range features such as \texttt{BIA-BIA\_DEE}.
+
+\paragraph{Results.} Table~\ref{tab:cmi_adasyn} reports the comparison. On the headline macro-F1 the weighted reference \emph{wins} ($0.338$ vs $0.313$): data-level oversampling does \emph{not} beat simple class weighting on the strongest model. What ADASYN does instead is shift the operating point --- it raises overall accuracy ($0.582$ vs $0.542$) and roughly doubles \texttt{Severe} recall ($0.118$ vs $0.059$, i.e.\ it catches $2$ of the $17$ severe cases rather than $1$), but at the cost of \texttt{Mild}/\texttt{Moderate} recall and thus macro-F1. Crucially, config~C's cross-validated macro-F1 ($0.327$) closely tracks its test macro-F1 ($0.313$), in stark contrast to the inflated $\approx 0.74$ produced by the leaky resample-before-CV pipeline in Module~1 --- a direct, quantitative confirmation that running the resampler inside the folds removes the optimism.
+
+\begin{table}[H]
+\centering
+\small
+\caption{XGBoost with algorithm-level (B, balanced weights) vs.\ data-level (C, ADASYN) imbalance handling, leakage-free protocol (test set).}
+\label{tab:cmi_adasyn}
+\begin{tabular}{l c c c c}
+\hline
+Config & CV F1 & Acc & F1$_{\text{mac}}$ & Sev.\ rec. \\
+\hline
+B --- Weighted & \textbf{0.336} & 0.542 & \textbf{0.338} & 0.059 \\
+C --- ADASYN   & 0.327 & \textbf{0.582} & 0.313 & \textbf{0.118} \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \imgph{Side-by-side confusion matrices for the weighted (B) and ADASYN (C) XGBoost models, plus a grouped bar chart of Accuracy, macro-F1, macro-recall, and Severe recall for the two configurations}
+    \caption{XGBoost weighted (B) vs.\ ADASYN (C): confusion matrices and grouped metric comparison.}
+    \label{fig:cmi_adasyn}
+\end{figure}
+
+\paragraph{Takeaway.} This is a legitimate \emph{negative} result: on a dataset this small and noisy, fabricating $\sim 4{,}500$ synthetic \texttt{Severe} points (a $68\times$ extrapolation of $66$ training examples) into a feature space that already contains instructor-injected synthetic samples buys a marginal gain in minority recall while degrading the balanced metric, and risks interpolating physiologically implausible profiles. Simple class weighting remains the better-behaved choice here, and the experiment also serves as a clean, in-sample demonstration of why resampling must live inside the cross-validation loop.
+
+\section{Conclusion}
+
+This report documented the tabular-dataset analysis of the Child Mind Institute Problematic Internet Use project, spanning data understanding and preparation, advanced preprocessing, and advanced supervised modeling with explainability.\\
+
+In preparation we corrected physically impossible values, imputed pervasive missingness with leakage-aware MICE, engineered compact composite features, and reduced a heavily redundant bio-impedance panel, retaining $97.6\%$ of the records. In preprocessing, four anomaly detectors from distinct families were combined into a conservative consensus that removed $0.80\%$ of records, and a controlled imbalanced-learning study exposed the accuracy/recall trade-offs of undersampling and oversampling. In modeling, five tuned classifiers and two non-linear regressors were evaluated under an identical, leakage-free protocol; SHAP/LIME/permutation analyses identified self-reported internet hours and global functioning as the dominant predictors; and a closing experiment showed that data-level oversampling (ADASYN) does not improve the strongest model over simple class weighting, while confirming that resampling inside the cross-validation folds removes the optimism that had inflated the Module~1 scores.\\
+
+The principal finding is that the severity of problematic internet use is only weakly predictable from physical, fitness, and body-composition measurements alone: macro-F1 plateaus around $0.30$ and regression explains roughly half the variance, with the rare \texttt{Severe} class essentially unlearnable from these features. Errors concentrate between adjacent ordinal levels, pointing to an ordinal-regression reformulation and to the behavioral/accelerometer signal --- analyzed in the project's companion time-series part --- as the more promising source of predictive power.\\
+
+\paragraph{Limitations and future work.} Several factors bound the results obtained here. First, the synthetic perturbation of the dataset injects noise and exact-duplicate records that no preprocessing can fully recover, and the small absolute size of the \texttt{Severe} class ($83$ records overall, $17$ in the test set) makes that class statistically fragile regardless of resampling. Second, the four-class target was modeled as a flat multiclass problem; an explicitly ordinal model (e.g.\ ordinal logistic regression or a cumulative-link formulation) would better match the structure revealed by the confusion matrices. Third, the regression target is itself partly imputed, which caps the attainable $R^2$. Promising extensions include cost-sensitive learning calibrated to clinical priorities, threshold optimization on the predicted-probability simplex, and --- most importantly --- fusing the tabular features with the wrist-sensor time-series representation studied in the companion part of the project, where the behavioral signal most directly related to internet use resides.
+
+\newpage
+
+\bibliographystyle{apsrev4-1}
+\bibliography{references}
+
+
+\end{document}
