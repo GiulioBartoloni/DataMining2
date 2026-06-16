@@ -143,6 +143,7 @@ def run_shapelet():
         t = time.time()
         rst = RandomShapeletTransform(
             n_shapelet_samples=2000, max_shapelets=60,
+            min_shapelet_length=8, max_shapelet_length=40,
             random_state=SEED, n_jobs=4)
         Ftr = rst.fit_transform(Xtr, ytr); Fte = rst.transform(Xte)
         clf = RandomForestClassifier(n_estimators=300, class_weight="balanced_subsample",

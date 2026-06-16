@@ -34,10 +34,14 @@ def main():
     outer = StratifiedGroupKFold(5, shuffle=True, random_state=tslib.SEED)
     tr, te = next(outer.split(Xs, yc, gc))
     rst = RandomShapeletTransform(n_shapelet_samples=4000, max_shapelets=80,
+                                  min_shapelet_length=8, max_shapelet_length=40,
                                   random_state=tslib.SEED, n_jobs=4)
     rst.fit(Xs[tr], yc[tr])
     shp = sorted(rst.shapelets, key=lambda s: -s[IG])
     print(f"retrieved {len(shp)} shapelets; top info-gain={shp[0][IG]:.3f}")
+    lens = np.array([s[LEN] for s in shp])
+    print(f"shapelet length distribution: min={lens.min()} mean={lens.mean():.1f} "
+          f"max={lens.max()} (series length 200)")
 
     # --- subject-fingerprint guard ---
     train_groups = gc[tr]

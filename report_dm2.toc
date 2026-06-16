@@ -103,16 +103,16 @@
 \contentsline {paragraph}{\numberline {b}Results and what the shapes reveal.}{20}{section*.144}%
 \contentsline {subsection}{\numberline {D}MiniRocket (Kernel/Convolution) and a Channel Ablation}{20}{section*.146}%
 \contentsline {paragraph}{\numberline {a}Model and tuning.}{20}{section*.147}%
-\contentsline {paragraph}{\numberline {b}Results.}{20}{section*.148}%
+\contentsline {paragraph}{\numberline {b}Results.}{21}{section*.148}%
 \contentsline {subsection}{\numberline {E}MUSE (Dictionary-Based)}{21}{section*.149}%
 \contentsline {paragraph}{\numberline {a}Model and tuning.}{21}{section*.150}%
 \contentsline {paragraph}{\numberline {b}Results.}{21}{section*.151}%
 \contentsline {subsection}{\numberline {F}Comparison and Discussion}{21}{section*.152}%
 \contentsline {paragraph}{\numberline {a}Ordering and headline metric.}{21}{section*.158}%
-\contentsline {paragraph}{\numberline {b}The leakage gap.}{21}{section*.159}%
+\contentsline {paragraph}{\numberline {b}The leakage gap.}{22}{section*.159}%
 \contentsline {paragraph}{\numberline {c}Interpretability hook (XAI).}{22}{section*.160}%
 \contentsline {paragraph}{\numberline {d}Overall.}{22}{section*.161}%
 \contentsline {section}{\numberline {VIII}Conclusion}{22}{section*.162}%
 \contentsline {paragraph}{\numberline {a}Time-series classification.}{22}{section*.163}%
-\contentsline {paragraph}{\numberline {b}Limitations and future work.}{22}{section*.164}%
+\contentsline {paragraph}{\numberline {b}Limitations and future work.}{23}{section*.164}%
 \contentsline {section}{\numberline {}References}{23}{section*.165}%
